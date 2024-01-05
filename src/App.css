@@ -10,3 +10,9 @@ body{
   justify-content:center;
   height:100vh;
 }
+#canvas-container{
+  width: 100%;
+}
+#canvas-actual{
+  background:#333;
+}

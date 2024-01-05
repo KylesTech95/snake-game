@@ -3,7 +3,9 @@ import './App.css';
 
 function App() {
   return (
-    <></>
+    <div id="canvas-container">
+      <><canvas id="canvas-actual" height="500" width="500"></canvas></>
+    </div>
   );
 }
 
