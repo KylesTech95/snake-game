@@ -18,6 +18,7 @@ function App() {
   //global  
   let canvasRef=useRef()
   let snakeRef=useRef()
+  let unitSize=25
   const [sides,setSides] = useState({x:undefined,y:undefined})
   useEffect(()=>{
     let tmp_sides = {
@@ -27,8 +28,25 @@ function App() {
     let bod = document.querySelector('body')
     let bodWidth = bod.getBoundingClientRect().x;
     let bodHeight = bod.getBoundingClientRect().y;
-    setSides(sides.x=(bodWidth/tmp_sides.x),
-            sides.y=(bodHeight/tmp_sides.y)  )
+    // setSides state to body's width / x & body's width / y
+    setSides(sides.x=(Math.floor(bodWidth/(tmp_sides.x))),
+            sides.y=(Math.floor(bodHeight/tmp_sides.y))  
+            )
+    //uncomment tests below for snake unitSize
+    {/*
+    // test snake movementX: +unitSize
+    // setSides(sides.x = sides.x + unitSize,
+    //   sides.y = sides.y) 
+    // test snake movementX: -unitSize
+    // setSides(sides.x = sides.x - unitSize,
+    //   sides.y = sides.y)
+     // test snake movementY: +unitSize
+    //  setSides(sides.x = sides.x,
+    //   sides.y = sides.y + unitSize)
+    // test snake movementY: -unitSize
+    // setSides(sides.x = sides.x,
+    //   sides.y = sides.y - unitSize)
+  */}
     // declare snake's position
     snakeRef.current.style=`left:${sides.x}px;top:${sides.y}px;`
   },[])
