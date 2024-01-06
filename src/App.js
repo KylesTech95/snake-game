@@ -5,7 +5,7 @@ import './App.css';
 function StartBtn({snakeMoves}){
   return (
     <div className="startBtn-container">
-      <button id="startBtn" onClick={handleUpdateSnake}>Start</button>
+      <button id="startBtn">Start</button>
     </div>
   )
 }
@@ -27,7 +27,7 @@ function App() {
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Snake {...{snakeRef,snakeX,snakeY}}/>
+      <Snake {...{snakeRef}}/>
 
       {/*Start button*/}
       <StartBtn/>
