@@ -9,8 +9,8 @@ function Snake({snakeRef}){
 }
 function App() {
   //global  
-  let canvasRef=useRef();
-  let snakeRef=useRef();
+  let canvasRef=useRef()
+  let snakeRef=useRef()
   let unitSize=5;
   const [sides,setSides] = useState({x:undefined,y:undefined})
 useEffect(()=>{
@@ -19,14 +19,13 @@ useEffect(()=>{
     y: canvasRef.current.getBoundingClientRect().y
   }
   let bod = document.querySelector('body')
-  let bodWidth = bod.clientWidth;
-  let bodHeight = bod.clientHeight;
-  setSides(sides.x=(bodWidth/tmp_sides.x)
-          ,sides.y=(bodHeight/(tmp_sides.y)))
+  let bodWidth = bod.getBoundingClientRect().x;
+  let bodHeight = bod.getBoundingClientRect().y;
+  setSides(sides.x=(bodWidth/tmp_sides.x),
+           sides.y=(bodHeight/tmp_sides.y)  )
   // declare snake's position
   snakeRef.current.style=`left:${sides.x}px;top:${sides.y}px;`
 },[])
-
 
   return (
     <div id="canvas-container" ref={canvasRef}>
