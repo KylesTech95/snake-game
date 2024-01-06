@@ -2,16 +2,21 @@ import logo from './logo.svg';
 import { useEffect, useRef,useState } from 'react';
 import './App.css';
 
-function StartBtn(){
+function StartBtn({handleUpdateSnake}){
   return (
     <div className="startBtn-container">
-      <button id="startBtn">Start</button>
+      <button id="startBtn" onClick={handleUpdateSnake}>Start</button>
     </div>
   )
 }
-function Snake({snakeRef}){
+
+function Snake({snakeRef,snakeX,snakeY}){
+  let snakePos = {
+    'left':`${snakeX}px`,
+    'top':`${snakeY}px`
+  }
   return (
-    <div id="snake" ref={snakeRef}></div>
+    <div id="snake" ref={snakeRef} style={snakePos}></div>
   )
 }
 function App() {
@@ -19,45 +24,45 @@ function App() {
   let canvasRef=useRef()
   let snakeRef=useRef()
   let unitSize=25
-  const [sides,setSides] = useState({x:undefined,y:undefined})
-  useEffect(()=>{
-    let tmp_sides = {
-      x: canvasRef.current.getBoundingClientRect().x,
-      y: canvasRef.current.getBoundingClientRect().y
-    }
-    let bod = document.querySelector('body')
-    let bodWidth = bod.getBoundingClientRect().x;
-    let bodHeight = bod.getBoundingClientRect().y;
-    // setSides state to body's width / x & body's width / y
-    setSides(sides.x=(Math.floor(bodWidth/(tmp_sides.x))),
-            sides.y=(Math.floor(bodHeight/tmp_sides.y))  
-            )
-    //uncomment tests below for snake unitSize
-    {/*
-    // test snake movementX: +unitSize
-    // setSides(sides.x = sides.x + unitSize,
-    //   sides.y = sides.y) 
-    // test snake movementX: -unitSize
-    // setSides(sides.x = sides.x - unitSize,
-    //   sides.y = sides.y)
-     // test snake movementY: +unitSize
-    //  setSides(sides.x = sides.x,
-    //   sides.y = sides.y + unitSize)
-    // test snake movementY: -unitSize
-    // setSides(sides.x = sides.x,
-    //   sides.y = sides.y - unitSize)
-  */}
-    // declare snake's position
-    snakeRef.current.style=`left:${sides.x}px;top:${sides.y}px;`
-  },[])
-
+  let bod = document.querySelector('body')
+  let bodWidth = bod.getBoundingClientRect().x;
+  let bodHeight = bod.getBoundingClientRect().y;
+  const [snakeX,setSnakeX] = useState(0)
+  const [snakeY,setSnakeY] = useState(0)
+  const [key,setKey] = useState('ArrowRight')
+// useEffect
+useEffect(()=>{
+  window.addEventListener('keydown',e=>{
+    let canvas = canvasRef.current,
+      cW=canvas.getBoundingClientRect().width
+      if(e.key === key){
+        if(snakeX < (cW-unitSize)){
+          setSnakeX(snakeX+unitSize)
+        }
+        console.log(key)
+      }
+  })
+},[key])
+// handleUpdateSnake
+const handleUpdateSnake=()=>{
+  let canvas = canvasRef.current,
+      cW=canvas.getBoundingClientRect().width
+      if(snakeX < (cW-unitSize)){
+        setSnakeX(snakeX + unitSize)
+        console.log(snakeX)
+      }
+      else{
+        setSnakeX(snakeX - unitSize)
+        console.log('you reached the end')
+      }
+}
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Snake {...{snakeRef}}/>
+      <Snake {...{snakeRef,snakeX,snakeY}}/>
 
       {/*Start button*/}
-      <StartBtn />
+      <StartBtn {...{handleUpdateSnake}}/>
     </div>
   );
 }
