@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import { useEffect, useRef,useState } from 'react';
 import './App.css';
 
-function StartBtn({snakeMoves}){
+function StartBtn(){
   return (
     <div className="startBtn-container">
       <button id="startBtn">Start</button>
