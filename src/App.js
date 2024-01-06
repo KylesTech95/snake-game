@@ -2,39 +2,36 @@ import logo from './logo.svg';
 import { useEffect, useRef,useState } from 'react';
 import './App.css';
 
-let unitSize=25;
-let fillStyle='lime';
-
-function Snake(){
-  let myStyles={
-    'height':`${unitSize}px`,
-    'width':`${unitSize}px`,
-    'backgroundColor':`${fillStyle}`,
-    'position':'absolute',
-    'border-radius':'50%',
-    'border': '5px solid green'
-  }
+function Snake({snakeRef}){
   return (
-    <div id="snake" style={myStyles}></div>
+    <div id="snake" ref={snakeRef}></div>
   )
 }
-
 function App() {
-//canvas context 2d
-const canvas = useRef()
+  //global  
+  let canvasRef=useRef();
+  let snakeRef=useRef();
+  let unitSize=5;
+  const [sides,setSides] = useState({x:undefined,y:undefined})
 useEffect(()=>{
-  let start = {
-    x:canvas.current.getBoundingClientRect().x + unitSize,
-    y:canvas.current.getBoundingClientRect().y + unitSize
+  let tmp_sides = {
+    x: canvasRef.current.getBoundingClientRect().x,
+    y: canvasRef.current.getBoundingClientRect().y
   }
-  console.log(start)
-})
-const [snakePos, setSnakePos] = useState({x:start.x,y:start.y})
-console.log(snakePos)
+  let bod = document.querySelector('body')
+  let bodWidth = bod.clientWidth;
+  let bodHeight = bod.clientHeight;
+  setSides(sides.x=(bodWidth/tmp_sides.x)
+          ,sides.y=(bodHeight/(tmp_sides.y)))
+  // declare snake's position
+  snakeRef.current.style=`left:${sides.x}px;top:${sides.y}px;`
+},[])
+
+
   return (
-    <div id="canvas-container">
-      <canvas id="canvas-actual" height="500" width="500" ref={canvas}></canvas>
-      <Snake/>
+    <div id="canvas-container" ref={canvasRef}>
+      <canvas id="canvas-actual" height="500" width="500"/>
+      <Snake {...{snakeRef}}/>
     </div>
   );
 }
