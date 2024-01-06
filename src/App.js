@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import { useEffect, useRef,useState } from 'react';
 import './App.css';
 
-function StartBtn(){
+function StartBtn({snakeMoves}){
   return (
     <div className="startBtn-container">
       <button id="startBtn">Start</button>
@@ -18,20 +18,7 @@ function App() {
   //global  
   let canvasRef=useRef()
   let snakeRef=useRef()
-  const [sides,setSides] = useState({x:undefined,y:undefined})
-  useEffect(()=>{
-    let tmp_sides = {
-      x: canvasRef.current.getBoundingClientRect().x,
-      y: canvasRef.current.getBoundingClientRect().y
-    }
-    let bod = document.querySelector('body')
-    let bodWidth = bod.getBoundingClientRect().x;
-    let bodHeight = bod.getBoundingClientRect().y;
-    setSides(sides.x=(bodWidth/tmp_sides.x),
-            sides.y=(bodHeight/tmp_sides.y)  )
-    // declare snake's position
-    snakeRef.current.style=`left:${sides.x}px;top:${sides.y}px;`
-  },[])
+  let unitSize=25
 
   return (
     <div id="canvas-container" ref={canvasRef}>
@@ -39,7 +26,7 @@ function App() {
       <Snake {...{snakeRef}}/>
 
       {/*Start button*/}
-      <StartBtn />
+      <StartBtn/>
     </div>
   );
 }
