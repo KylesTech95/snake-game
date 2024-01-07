@@ -9,9 +9,14 @@ function StartBtn({startGame}){
   )
 }
 function Snake({snakeRef,snake}){
+  useEffect(()=>{
+    console.log(snakeRef.current)
+  },[])
   return (
+    // style={{'left':`${snake[0].x}px`,'top':`${snake[0].y}px`}}
     <div id="snake" ref={snakeRef} style={{'left':`${snake[0].x}px`,'top':`${snake[0].y}px`}}></div>
   )
+  
 }
 function App() {
   //global
@@ -25,7 +30,7 @@ function App() {
   //update snake direction
   const keyPress = () => {
     window.addEventListener('keypress',e=>{
-   
+      console.log(snakeRef.current)
         //switch statement
         switch(true){
           case e.key==='w':
