@@ -1,14 +1,54 @@
 import { useEffect, useRef,useState } from 'react';
 import './App.css';
 
-function StartBtn({startGame}){
+function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}){
+  useEffect(()=>{
+    if(playing){
+      setBtnLable('Reset')
+      setBtnColor('red')
+      btnRef.current.addEventListener('mouseover',e=>{
+        let btn = e.target;
+        //immediate color change w/o the use of state
+        btn.style=`background-color:red;`
+        btn.style=`background-color:${btnColor}`
+        
+      })
+      btnRef.current.addEventListener('mouseout',e=>{
+        let btn = e.target;
+        btn.style=`background-color:none`
+      })
+    }
+    else{
+      setBtnLable('Start')
+      setBtnColor('green')
+      btnRef.current.addEventListener('mouseover',e=>{
+        let btn = e.target;
+        //immediate color change w/o the use of state
+        btn.style=`background-color:green;`
+        btn.style=`background-color:${btnColor}`
+        
+      })
+      btnRef.current.addEventListener('mouseout',e=>{
+        let btn = e.target;
+        btn.style=`background-color:none`
+      })
+    }
+  },[playing,btnColor])
   return (
-    <div className="startBtn-container">
-      <button id="startBtn" onClick={startGame}>Start</button>
+    <div className="btn-container">
+      <button id="btn" ref={btnRef} onClick={()=>{
+        if(playing){
+          resetGame()
+          console.log(gameover)
+        }
+        else{
+          startGame()
+        }
+      }}>{btnLable}</button>
     </div>
   )
 }
-function Snake({snakeRef,snake,setPlaying,setGameover,unitSize}){
+function Snake({snakeRef,snake,playing,setPlaying,setGameover,unitSize}){
   const min = 0;
   const max = 475;
   const declareGameOverFn = () => {
@@ -17,56 +57,51 @@ function Snake({snakeRef,snake,setPlaying,setGameover,unitSize}){
     console.log('game over')
   }
   useEffect(()=>{
-    // [snakeX,snakeY].every(s=>{
-    //   if(s>=max||s<=min){
-    //     setGameover(true)
-    //     setPlaying(false)
-    //     console.log('game over')
-    //   }
-    // })
-    window.addEventListener('keydown',e=>{
-      // format snake positions (left/top) to remove 'px' (ex: '25px' => 25)
-      let snakeX =  +snakeRef.current.style.left.replace(/px/,'')
-      let snakeY = +snakeRef.current.style.top.replace(/px/,'')
-    //switch statement to increase/decrease units based on key press (w,a,s,d)
-      switch(true){
-        case e.key==='w':
-        snakeY-=unitSize
-        break;
-        case e.key==='a':
-        snakeX-=unitSize
-        break;
-        case e.key==='s':
-        snakeY+=unitSize
-        break;
-        case e.key==='d':
-        snakeX+=unitSize
-        break;
-        default:
-        console.log(undefined)
-        break;
-      }
-      switch(true){
-        case +snakeX > max:
-        declareGameOverFn()
-        break;
-        case +snakeY > max:
-        declareGameOverFn()
-        break;
-        case +snakeX < min:
-        declareGameOverFn()
-        break;
-        case +snakeY < min:
-        declareGameOverFn()
-        break;
-        default:
-        console.log(undefined)
-        break;
-      }
-        console.log(snakeX, snakeY)
-    })
+    if(playing){
+      window.addEventListener('keydown',e=>{
+        // format snake positions (left/top) to remove 'px' (ex: '25px' => 25)
+        let snakeX =  +snakeRef.current.style.left.replace(/px/,'')
+        let snakeY = +snakeRef.current.style.top.replace(/px/,'')
+      //switch statement to increase/decrease units based on key press (w,a,s,d)
+        switch(true){
+          case e.key==='w':
+          snakeY-=unitSize
+          break;
+          case e.key==='a':
+          snakeX-=unitSize
+          break;
+          case e.key==='s':
+          snakeY+=unitSize
+          break;
+          case e.key==='d':
+          snakeX+=unitSize
+          break;
+          default:
+          console.log(undefined)
+          break;
+        }
+        switch(true){
+          case +snakeX > max:
+          declareGameOverFn()
+          break;
+          case +snakeY > max:
+          declareGameOverFn()
+          break;
+          case +snakeX < min:
+          declareGameOverFn()
+          break;
+          case +snakeY < min:
+          declareGameOverFn()
+          break;
+          default:
+            console.log(snakeX, snakeY)
+        }
+          
+      })
+    }
+  
 
-  },[snakeRef])
+  },[snakeRef,playing])
   return (
     // style={{'left':`${snake[0].x}px`,'top':`${snake[0].y}px`}}
     <div id="snake" ref={snakeRef} style={{'left':`${snake[0].x}px`,'top':`${snake[0].y}px`}}></div>
@@ -77,56 +112,105 @@ function App() {
   //global
   let canvasRef=useRef()
   let snakeRef=useRef()
-  let unitSize=25
+  let btnRef = useRef();
 
   const [snake,setSnake]=useState([{x:0,y:0}])
   const [playing,setPlaying]=useState(false)
   const [gameover,setGameover]=useState(true)
+  const [btnColor,setBtnColor]=useState('green')
+  const [btnLable,setBtnLable]=useState('Start')
+  const [unitSize,setUnitSize]=useState(25)
   
   //update snake direction
   const keyPress = () => {
     window.addEventListener('keypress',e=>{
       // console.log(snakeRef.current)
         //switch statement
-        switch(true){
-          case e.key==='w':
-          console.log('up')
-          setSnake(s=>[{x:s[0].x,y:s[0].y-unitSize}])
-          break;
-          case e.key==='a':
-          console.log('left')
-          setSnake(s=>[{x:s[0].x-unitSize,y:s[0].y}])
-          break;
-          case e.key==='s':
-          console.log('down')
-          setSnake(s=>[{x:s[0].x,y:s[0].y+unitSize}])
-          break;
-          case e.key==='d':
-          console.log('right')
-          setSnake(s=>[{x:s[0].x+unitSize,y:s[0].y}])
-          break;
-          default:
-          console.log(undefined)
-          break;
+        if(gameover==false){
+          switch(true){
+            case e.key==='w':
+            console.log('up')
+            setSnake(s=>[{x:s[0].x,y:s[0].y-unitSize}])
+            break;
+            case e.key==='a':
+            console.log('left')
+            setSnake(s=>[{x:s[0].x-unitSize,y:s[0].y}])
+            break;
+            case e.key==='s':
+            console.log('down')
+            setSnake(s=>[{x:s[0].x,y:s[0].y+unitSize}])
+            break;
+            case e.key==='d':
+            console.log('right')
+            setSnake(s=>[{x:s[0].x+unitSize,y:s[0].y}])
+            break;
+            default:
+            console.log(undefined)
+            break;
+          }
         }
+        
+    })
+
+}
+useEffect(()=>{
+  if(playing){
+    keyPress()
+  }
+  if(gameover){
+    window.addEventListener('keydown',()=>{
+      return null;
     })
   }
-useEffect(()=>{
-  if(playing)keyPress()
 // eslint-disable-next-line
 },[playing])
   const startGame = () => {
+    console.log('you pressed start')
     //set playing to true
     setPlaying(true)
     setGameover(false)
+    setBtnColor('red')
+    btnRef.current.addEventListener('mouseover',e=>{
+      let btn = e.target;
+      //immediate color change w/o the use of state
+      btn.style=`background-color:red;`
+      btn.style=`background-color:${btnColor}`
+      
+    })
+    btnRef.current.addEventListener('mouseout',e=>{
+      let btn = e.target;
+      btn.style=`background-color:none`
+    })
   }
+  const resetGame = () => {
+      console.log('you pressed reset')
+      //set playing to true
+      setPlaying(false)
+      setGameover(true)
+      setSnake([{x:0,y:0}])
+      setBtnColor('green')
+      setUnitSize(25)
+      btnRef.current.addEventListener('mouseover',e=>{
+        let btn = e.target;
+        //immediate color change w/o the use of state
+        btn.style=`background-color:green;`
+        btn.style=`background-color:${btnColor}`
+        
+      })
+    
+    btnRef.current.addEventListener('mouseout',e=>{
+      let btn = e.target;
+      btn.style=`background-color:none`
+    })
+  }
+  
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Snake {...{snakeRef, snake,setPlaying,setGameover,unitSize}}/>
+      <Snake {...{snakeRef, snake,playing,setPlaying,setGameover,unitSize}}/>
 
       {/*Start button*/}
-      <StartBtn {...{startGame}}/>
+      <Btn {...{gameover,startGame,resetGame,setPlaying,setGameover,playing,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}}/>
     </div>
   );
 }
