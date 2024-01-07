@@ -20,22 +20,50 @@ function App() {
   let snakeRef=useRef()
   let unitSize=25
 
-  const [snake,setSnake]=useState([{
-    x:0,
-    y:0
-  }])
-
+  const [snake,setSnake]=useState([{x:0,y:0}])
+  const [playing,setPlaying]=useState(false)
+  
+  //update snake direction
+  const keyPress = () => {
+    window.addEventListener('keypress',e=>{
+      if(playing){
+        //switch statement
+        switch(true){
+          case e.key=='w':
+          console.log('up')
+          setSnake(s=>[{x:s[0].x,y:s[0].yunitSize}])
+          break;
+          case e.key=='a':
+          console.log('left')
+          setSnake(s=>[{x:s[0].x-unitSize,y:s[0].y}])
+          break;
+          case e.key=='s':
+          console.log('down')
+          setSnake(s=>[{x:s[0].x,y:s[0].y+unitSize}])
+          break;
+          case e.key=='d':
+          console.log('right')
+          setSnake(s=>[{x:s[0].x+unitSize,y:s[0].y}])
+          break;
+        }
+      }
+    })
+  }
+  useEffect(()=>{
+    keyPress()
+  },[playing])
   const moveSnake = () => {
+    setPlaying(true)
     let cW=canvasRef.current.getBoundingClientRect().width
+    let cH=canvasRef.current.getBoundingClientRect().height
     let constant = 0;
     let snakeInterval = setInterval(()=>{
       //move snake
       setSnake(s=>[{x:s[0].x+unitSize,y:s[0].y}])
       //track snakeX position with constant += 25 units
       constant+=unitSize
-      console.log(constant)
-      if(constant >= cW-unitSize)clearInterval(snakeInterval)
-      },100)
+      if(constant >= cW-unitSize||constant >= cH-unitSize||constant < 0)clearInterval(snakeInterval)
+      },1500)
 
   }
   return (
