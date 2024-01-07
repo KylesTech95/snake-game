@@ -1,4 +1,4 @@
-import { useEffect, useRef,useState,useCallback } from 'react';
+import { useEffect, useRef,useState } from 'react';
 import './App.css';
 
 function StartBtn({startGame}){
@@ -11,7 +11,7 @@ function StartBtn({startGame}){
 function Snake({snakeRef,snake}){
   useEffect(()=>{
     console.log(snakeRef.current)
-  },[])
+  },[snakeRef])
   return (
     // style={{'left':`${snake[0].x}px`,'top':`${snake[0].y}px`}}
     <div id="snake" ref={snakeRef} style={{'left':`${snake[0].x}px`,'top':`${snake[0].y}px`}}></div>
@@ -57,6 +57,7 @@ function App() {
   }
 useEffect(()=>{
   if(playing)keyPress()
+// eslint-disable-next-line
 },[playing])
   const startGame = () => {
     //set playing to true
