@@ -62,6 +62,13 @@ function Snake({snakeRef,snake,playing,setPlaying,setGameover,unitSize}){
   )
   
 }
+function ScoreBoard({score,setScore}){
+  return(
+  <div className="score-container">
+    <div className="score">{score}</div>
+  </div>
+    )
+}
 function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}){
   useEffect(()=>{
     if(playing){
@@ -130,6 +137,7 @@ function App() {
   const [btnColor,setBtnColor]=useState('green')
   const [btnLable,setBtnLable]=useState('Start')
   const [unitSize,setUnitSize]=useState(25)
+  const [score,setScore]=useState(0)
   
   //update snake direction
   const keyPress = () => {
@@ -167,10 +175,8 @@ useEffect(()=>{
   if(playing){
     keyPress()
   }
-  if(gameover){
-    window.addEventListener('keydown',()=>{
-      return null;
-    })
+  if(gameover && score > 0){
+    console.log('game is fucking over ')
   }
 // eslint-disable-next-line
 },[playing])
@@ -178,6 +184,7 @@ useEffect(()=>{
     console.log('you pressed start')
     //set playing to true
     setPlaying(true)
+    setScore(score + 1)
     setGameover(false)
     setBtnColor('red')
     btnRef.current.addEventListener('mouseover',e=>{
