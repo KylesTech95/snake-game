@@ -15,19 +15,28 @@ function Snake({snakeRef,snake}){
   )
 }
 function App() {
-  //global  
+  //global
   let canvasRef=useRef()
   let snakeRef=useRef()
   let unitSize=25
+
   const [snake,setSnake]=useState([{
     x:0,
     y:0
   }])
 
   const moveSnake = () => {
-    setInterval(()=>{
+    let cW=canvasRef.current.getBoundingClientRect().width
+    let constant = 0;
+    let snakeInterval = setInterval(()=>{
+      //move snake
       setSnake(s=>[{x:s[0].x+unitSize,y:s[0].y}])
-      },1000)
+      //track snakeX position with constant += 25 units
+      constant+=unitSize
+      console.log(constant)
+      if(constant >= cW-unitSize)clearInterval(snakeInterval)
+      },100)
+
   }
   return (
     <div id="canvas-container" ref={canvasRef}>
