@@ -1,53 +1,7 @@
 import { useEffect, useRef,useState } from 'react';
 import './App.css';
 
-function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}){
-  useEffect(()=>{
-    if(playing){
-      setBtnLable('Reset')
-      setBtnColor('red')
-      btnRef.current.addEventListener('mouseover',e=>{
-        let btn = e.target;
-        //immediate color change w/o the use of state
-        btn.style=`background-color:red;`
-        btn.style=`background-color:${btnColor}`
-        
-      })
-      btnRef.current.addEventListener('mouseout',e=>{
-        let btn = e.target;
-        btn.style=`background-color:none`
-      })
-    }
-    else{
-      setBtnLable('Start')
-      setBtnColor('green')
-      btnRef.current.addEventListener('mouseover',e=>{
-        let btn = e.target;
-        //immediate color change w/o the use of state
-        btn.style=`background-color:green;`
-        btn.style=`background-color:${btnColor}`
-        
-      })
-      btnRef.current.addEventListener('mouseout',e=>{
-        let btn = e.target;
-        btn.style=`background-color:none`
-      })
-    }
-  },[playing,btnColor])
-  return (
-    <div className="btn-container">
-      <button id="btn" ref={btnRef} onClick={()=>{
-        if(playing){
-          resetGame()
-          console.log(gameover)
-        }
-        else{
-          startGame()
-        }
-      }}>{btnLable}</button>
-    </div>
-  )
-}
+
 function Snake({snakeRef,snake,playing,setPlaying,setGameover,unitSize}){
   const min = 0;
   const max = 475;
@@ -108,6 +62,62 @@ function Snake({snakeRef,snake,playing,setPlaying,setGameover,unitSize}){
   )
   
 }
+function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}){
+  useEffect(()=>{
+    if(playing){
+      setBtnLable('Reset')
+      setBtnColor('red')
+      btnRef.current.addEventListener('mouseover',e=>{
+        let btn = e.target;
+        //immediate color change w/o the use of state
+        btn.style=`background-color:red;`
+        btn.style=`background-color:${btnColor}`
+        
+      })
+      btnRef.current.addEventListener('mouseout',e=>{
+        let btn = e.target;
+        btn.style=`background-color:none`
+      })
+    }
+    else{
+      setBtnLable('Start')
+      setBtnColor('green')
+      btnRef.current.addEventListener('mouseover',e=>{
+        let btn = e.target;
+        //immediate color change w/o the use of state
+        btn.style=`background-color:green;`
+        btn.style=`background-color:${btnColor}`
+        
+      })
+      btnRef.current.addEventListener('mouseout',e=>{
+        let btn = e.target;
+        btn.style=`background-color:none`
+      })
+    }
+  },[playing,btnColor])
+  return (
+    <div className="btn-container" ref={btnRef}>
+      <button id="btn" onClick={()=>{
+        if(playing){
+          resetGame()
+          console.log(gameover)
+        }
+        else{
+          startGame()
+        }
+      }}>{btnLable}</button>
+    </div>
+  )
+}
+
+
+
+
+
+
+
+
+
 function App() {
   //global
   let canvasRef=useRef()
@@ -214,5 +224,4 @@ useEffect(()=>{
     </div>
   );
 }
-
 export default App;

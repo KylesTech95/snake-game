@@ -42,7 +42,7 @@ body{
   overflow:hidden;
   box-shadow:0 .25rem 6px 1.5px #333;
   transform:scale(1.05);
-
+  border:none;
 }
 .btn-container:hover{
   animation:startMe 1.25s ease infinite alternate
@@ -67,6 +67,6 @@ body{
 }
 #btn:hover{
   color:#fff;
-  transition:.25s;
+  transition:.3s;
   border:none;
 }
