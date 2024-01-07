@@ -1,11 +1,10 @@
-import logo from './logo.svg';
-import { useEffect, useRef,useState } from 'react';
+import { useEffect, useRef,useState,useCallback } from 'react';
 import './App.css';
 
-function StartBtn({moveSnake}){
+function StartBtn({startGame}){
   return (
     <div className="startBtn-container">
-      <button id="startBtn" onClick={moveSnake}>Start</button>
+      <button id="startBtn" onClick={startGame}>Start</button>
     </div>
   )
 }
@@ -26,45 +25,37 @@ function App() {
   //update snake direction
   const keyPress = () => {
     window.addEventListener('keypress',e=>{
-      if(playing){
+   
         //switch statement
         switch(true){
-          case e.key=='w':
+          case e.key==='w':
           console.log('up')
-          setSnake(s=>[{x:s[0].x,y:s[0].yunitSize}])
+          setSnake(s=>[{x:s[0].x,y:s[0].y-unitSize}])
           break;
-          case e.key=='a':
+          case e.key==='a':
           console.log('left')
           setSnake(s=>[{x:s[0].x-unitSize,y:s[0].y}])
           break;
-          case e.key=='s':
+          case e.key==='s':
           console.log('down')
           setSnake(s=>[{x:s[0].x,y:s[0].y+unitSize}])
           break;
-          case e.key=='d':
+          case e.key==='d':
           console.log('right')
           setSnake(s=>[{x:s[0].x+unitSize,y:s[0].y}])
           break;
+          default:
+          console.log(undefined)
+          break;
         }
-      }
     })
   }
-  useEffect(()=>{
-    keyPress()
-  },[playing])
-  const moveSnake = () => {
+useEffect(()=>{
+  if(playing)keyPress()
+},[playing])
+  const startGame = () => {
+    //set playing to true
     setPlaying(true)
-    let cW=canvasRef.current.getBoundingClientRect().width
-    let cH=canvasRef.current.getBoundingClientRect().height
-    let constant = 0;
-    let snakeInterval = setInterval(()=>{
-      //move snake
-      setSnake(s=>[{x:s[0].x+unitSize,y:s[0].y}])
-      //track snakeX position with constant += 25 units
-      constant+=unitSize
-      if(constant >= cW-unitSize||constant >= cH-unitSize||constant < 0)clearInterval(snakeInterval)
-      },1500)
-
   }
   return (
     <div id="canvas-container" ref={canvasRef}>
@@ -72,7 +63,7 @@ function App() {
       <Snake {...{snakeRef, snake}}/>
 
       {/*Start button*/}
-      <StartBtn {...{moveSnake}}/>
+      <StartBtn {...{startGame}}/>
     </div>
   );
 }
