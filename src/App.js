@@ -57,6 +57,16 @@ function Snake({snakeRef,snake,playing,resetGame,unitSize}){
   )
   
 }
+
+ function Food({food,setFood}) {
+
+  return (
+    <div className="food-container">
+      <div id="food"></div>
+    </div>
+  )
+}
+
 function ScoreBoard({score,setScore}){
   return(
   <div className="score-container">
@@ -72,13 +82,13 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
       btnRef.current.addEventListener('mouseover',e=>{
         let btn = e.target;
         //immediate color change w/o the use of state
-        btn.style=`background-color:red;`
-        btn.style=`background-color:${btnColor}`
+        btn.style=`border:none;background-color:red;`
+        btn.style=`border:none;background-color:${btnColor}`
         
       })
       btnRef.current.addEventListener('mouseout',e=>{
         let btn = e.target;
-        btn.style=`background-color:none`
+        btn.style=`border:none;background-color:none`
       })
     }
     else{
@@ -87,13 +97,13 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
       btnRef.current.addEventListener('mouseover',e=>{
         let btn = e.target;
         //immediate color change w/o the use of state
-        btn.style=`background-color:green;`
-        btn.style=`background-color:${btnColor}`
+        btn.style=`border:none;background-color:green;`
+        btn.style=`border:none;background-color:${btnColor}`
         
       })
       btnRef.current.addEventListener('mouseout',e=>{
         let btn = e.target;
-        btn.style=`background-color:none`
+        btn.style=`border:none;background-color:none`
       })
     }
   },[playing,btnColor])
@@ -126,6 +136,7 @@ function App() {
   let btnRef = useRef();
 
   const [snake,setSnake]=useState([{x:0,y:0}])
+  const [food,setFood]=useState([{x:undefined,y:undefined}])
   const [playing,setPlaying]=useState(false)
   const [gameover,setGameover]=useState(true)
   const [btnColor,setBtnColor]=useState('green')
@@ -196,13 +207,13 @@ useEffect(()=>{
     btnRef.current.addEventListener('mouseover',e=>{
       let btn = e.target;
       //immediate color change w/o the use of state
-      btn.style=`background-color:red;`
-      btn.style=`background-color:${btnColor}`
+      btn.style=`border:none;background-color:red;`
+      btn.style=`border:none;background-color:${btnColor}`
       
     })
     btnRef.current.addEventListener('mouseout',e=>{
       let btn = e.target;
-      btn.style=`background-color:none`
+      btn.style=`border:none;background-color:none`
     })
   }
   const resetGame = () => {
@@ -216,14 +227,14 @@ useEffect(()=>{
       btnRef.current.addEventListener('mouseover',e=>{
         let btn = e.target;
         //immediate color change w/o the use of state
-        btn.style=`background-color:green;`
-        btn.style=`background-color:${btnColor}`
+        btn.style=`border:none;background-color:green;`
+        btn.style=`border:none;background-color:${btnColor}`
         
       })
     
     btnRef.current.addEventListener('mouseout',e=>{
       let btn = e.target;
-      btn.style=`background-color:none`
+      btn.style=`border:none;background-color:none`
     })
   }
   
@@ -231,6 +242,7 @@ useEffect(()=>{
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
       <Snake {...{resetGame,snakeRef,snake,playing,unitSize}}/>
+      <Food {...{food,setFood}}/>
       <ScoreBoard  {...{score}}/>
       {/*Start button*/}
       <Btn {...{gameover,startGame,resetGame,setPlaying,setGameover,playing,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}}/>
