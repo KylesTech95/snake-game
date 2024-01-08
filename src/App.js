@@ -1,13 +1,10 @@
-import { useEffect, useRef,useState } from 'react';
+import { useEffect, useRef,useState,useCallback } from 'react';
 import './App.css';
 
 
 function Snake({snakeRef,snake,playing,resetGame,unitSize}){
   const min = 0;
   const max = 475;
-  const declareGameOverFn = () => {
-    resetGame()
-  }
   useEffect(()=>{
     if(playing){
       window.addEventListener('keydown',e=>{
@@ -34,16 +31,16 @@ function Snake({snakeRef,snake,playing,resetGame,unitSize}){
         }
         switch(true){
           case +snakeX > max:
-          declareGameOverFn()
+          resetGame()
           break;
           case +snakeY > max:
-          declareGameOverFn()
+          resetGame()
           break;
           case +snakeX < min:
-          declareGameOverFn()
+          resetGame()
           break;
           case +snakeY < min:
-          declareGameOverFn()
+          resetGame()
           break;
           default:
             console.log(snakeX, snakeY)
@@ -135,47 +132,52 @@ function App() {
   const [btnLable,setBtnLable]=useState('Start')
   const [unitSize,setUnitSize]=useState(25)
   const [score,setScore]=useState(0)
-  
-  //update snake direction
-  const keyPress = () => {
-    window.addEventListener('keypress',e=>{
-      // console.log(snakeRef.current)
+  const handleKey = event => {
+    // console.log(snakeRef.current)
         //switch statement
-        if(playing){
-          switch(true){
-            case e.key==='w':
-            console.log('up')
-            setSnake(s=>[{x:s[0].x,y:s[0].y-unitSize}])
-            break;
-            case e.key==='a':
-            console.log('left')
-            setSnake(s=>[{x:s[0].x-unitSize,y:s[0].y}])
-            break;
-            case e.key==='s':
-            console.log('down')
-            setSnake(s=>[{x:s[0].x,y:s[0].y+unitSize}])
-            break;
-            case e.key==='d':
-            console.log('right')
-            setSnake(s=>[{x:s[0].x+unitSize,y:s[0].y}])
-            break;
-            default:
-            console.log(undefined)
-            break;
-          }
-        
+        switch(true){
+          case event.key==='w':
+          console.log('up')
+          setSnake(s=>[{x:s[0].x,y:s[0].y-unitSize}])
+          break;
+          case event.key==='a':
+          console.log('left')
+          setSnake(s=>[{x:s[0].x-unitSize,y:s[0].y}])
+          break;
+          case event.key==='s':
+          console.log('down')
+          setSnake(s=>[{x:s[0].x,y:s[0].y+unitSize}])
+          break;
+          case event.key==='d':
+          console.log('right')
+          setSnake(s=>[{x:s[0].x+unitSize,y:s[0].y}])
+          break;
+          default:
+          console.log(undefined)
+          break;
         }
-        
-    })
-
-}
+  }
+  const memoizedListener = useCallback(handleKey, [])
 useEffect(()=>{
-  keyPress()
+    //update snake direction
+    
+
+  if(playing){
+    window.addEventListener('keypress',memoizedListener)
+  }
+else{
+  return () => {
+    window.removeEventListener('keypress',memoizedListener);
+  };
+}
+  
   if(gameover && score > 0){
     console.log('game is fucking over ')
   }
 // eslint-disable-next-line
-},[playing])
+},[playing,memoizedListener])
+
+
   const startGame = () => {
     console.log('you pressed start')
     //set playing to true
@@ -203,7 +205,6 @@ useEffect(()=>{
       setGameover(true)
       setSnake([{x:0,y:0}])
       setBtnColor('green')
-      setUnitSize(25)
       btnRef.current.addEventListener('mouseover',e=>{
         let btn = e.target;
         //immediate color change w/o the use of state
