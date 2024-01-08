@@ -6,7 +6,7 @@ function Snake({snakeRef,snake,playing,resetGame,unitSize}){
   const min = 0;
   const max = 475;
   useEffect(()=>{
-    if(playing){
+    if(!playing){
       window.addEventListener('keydown',e=>{
         // format snake positions (left/top) to remove 'px' (ex: '25px' => 25)
         let snakeX =  +snakeRef.current.style.left.replace(/px/,'')
@@ -164,12 +164,20 @@ useEffect(()=>{
 
   if(playing){
     window.addEventListener('keypress',memoizedListener)
+    return () => {
+      window.removeEventListener('keypress',memoizedListener);
+    }
   }
-else{
-  return () => {
-    window.removeEventListener('keypress',memoizedListener);
-  };
-}
+  else{
+    return () => {
+      window.removeEventListener('keypress',memoizedListener);
+    };
+  }
+// else{
+//   return () => {
+//     window.removeEventListener('keypress',memoizedListener);
+//   };
+// }
   
   if(gameover && score > 0){
     console.log('game is fucking over ')
