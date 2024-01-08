@@ -141,7 +141,7 @@ function App() {
     window.addEventListener('keypress',e=>{
       // console.log(snakeRef.current)
         //switch statement
-        if(!gameover){
+        if(playing){
           switch(true){
             case e.key==='w':
             console.log('up')
@@ -166,17 +166,11 @@ function App() {
         
         }
         
-        else{
-          setSnake([{x:0,y:0}])
-        }
-        
     })
 
 }
 useEffect(()=>{
-  if(playing){
-    keyPress()
-  }
+  keyPress()
   if(gameover && score > 0){
     console.log('game is fucking over ')
   }
@@ -203,7 +197,7 @@ useEffect(()=>{
   }
   const resetGame = () => {
       setScore(0)
-      console.log('you pressed reset')
+      console.log('game is reset')
       //set playing to true
       setPlaying(false)
       setGameover(true)
