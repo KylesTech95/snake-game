@@ -70,3 +70,7 @@ body{
   transition:.3s;
   border:none;
 }
+
+#score{
+  font-size:2rem;
+}

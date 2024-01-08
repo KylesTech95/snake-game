@@ -2,13 +2,11 @@ import { useEffect, useRef,useState } from 'react';
 import './App.css';
 
 
-function Snake({snakeRef,snake,playing,setPlaying,setGameover,unitSize}){
+function Snake({snakeRef,snake,playing,resetGame,unitSize}){
   const min = 0;
   const max = 475;
   const declareGameOverFn = () => {
-    setGameover(true)
-    setPlaying(false)
-    console.log('game over')
+    resetGame()
   }
   useEffect(()=>{
     if(playing){
@@ -65,7 +63,7 @@ function Snake({snakeRef,snake,playing,setPlaying,setGameover,unitSize}){
 function ScoreBoard({score,setScore}){
   return(
   <div className="score-container">
-    <div className="score">{score}</div>
+    <div id="score">{score}</div>
   </div>
     )
 }
@@ -107,7 +105,6 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
       <button id="btn" onClick={()=>{
         if(playing){
           resetGame()
-          console.log(gameover)
         }
         else{
           startGame()
@@ -144,7 +141,7 @@ function App() {
     window.addEventListener('keypress',e=>{
       // console.log(snakeRef.current)
         //switch statement
-        if(gameover==false){
+        if(!gameover){
           switch(true){
             case e.key==='w':
             console.log('up')
@@ -166,6 +163,11 @@ function App() {
             console.log(undefined)
             break;
           }
+        
+        }
+        
+        else{
+          setSnake([{x:0,y:0}])
         }
         
     })
@@ -200,6 +202,7 @@ useEffect(()=>{
     })
   }
   const resetGame = () => {
+      setScore(0)
       console.log('you pressed reset')
       //set playing to true
       setPlaying(false)
@@ -224,8 +227,8 @@ useEffect(()=>{
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Snake {...{snakeRef, snake,playing,setPlaying,setGameover,unitSize}}/>
-
+      <Snake {...{resetGame,snakeRef,snake,playing,unitSize}}/>
+      <ScoreBoard  {...{score}}/>
       {/*Start button*/}
       <Btn {...{gameover,startGame,resetGame,setPlaying,setGameover,playing,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}}/>
     </div>
