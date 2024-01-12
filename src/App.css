@@ -25,7 +25,7 @@ body{
   background:#333;
 }
 
-#snake{
+.snake{
     height:25px;
     width:25px;
     background:lime;

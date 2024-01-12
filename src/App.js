@@ -52,8 +52,12 @@ function Snake({snakeRef,snake,playing,resetGame,unitSize}){
 
   },[snakeRef,playing])
   return (
-    // style={{'left':`${snake[0].x}px`,'top':`${snake[0].y}px`}}
-    <div id="snake" ref={snakeRef} style={{'left':`${snake[0].x}px`,'top':`${snake[0].y}px`}}></div>
+    <>
+    {snake.map((snek,index)=>(
+      <div className="snake" ref={snakeRef} key={index} style={{'left':`${snek.x}px`,'top':`${snek.y}px`}}></div>
+    ))}
+    </>
+    
   )
   
 }
@@ -134,14 +138,13 @@ function App() {
   let canvasRef=useRef()
   let snakeRef=useRef()
   let btnRef = useRef();
-
-  const [snake,setSnake]=useState([{x:0,y:0}])
+  let unitSize = 25;
+  const [snake,setSnake]=useState([{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0}])
   const [food,setFood]=useState([{x:undefined,y:undefined}])
   const [playing,setPlaying]=useState(false)
   const [gameover,setGameover]=useState(true)
   const [btnColor,setBtnColor]=useState('green')
   const [btnLable,setBtnLable]=useState('Start')
-  const [unitSize,setUnitSize]=useState(25)
   const [score,setScore]=useState(0)
   const handleKey = event => {
     // console.log(snakeRef.current)
