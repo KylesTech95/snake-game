@@ -8,43 +8,7 @@ function Snake({snakeRef,snake,playing,resetGame,unitSize}){
   useEffect(()=>{
     if(!playing){
       window.addEventListener('keydown',e=>{
-        // format snake positions (left/top) to remove 'px' (ex: '25px' => 25)
-        let snakeX =  +snakeRef.current.style.left.replace(/px/,'')
-        let snakeY = +snakeRef.current.style.top.replace(/px/,'')
-      //switch statement to increase/decrease units based on key press (w,a,s,d)
-        switch(true){
-          case e.key==='w':
-          snakeY-=unitSize
-          break;
-          case e.key==='a':
-          snakeX-=unitSize
-          break;
-          case e.key==='s':
-          snakeY+=unitSize
-          break;
-          case e.key==='d':
-          snakeX+=unitSize
-          break;
-          default:
-          console.log(undefined)
-          break;
-        }
-        switch(true){
-          case +snakeX > max:
-          resetGame()
-          break;
-          case +snakeY > max:
-          resetGame()
-          break;
-          case +snakeX < min:
-          resetGame()
-          break;
-          case +snakeY < min:
-          resetGame()
-          break;
-          default:
-            console.log(snakeX, snakeY)
-        }
+        return null
           
       })
     }
