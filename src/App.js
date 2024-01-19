@@ -1,11 +1,31 @@
 import { useEffect, useRef,useState,useCallback } from 'react';
 import './App.css';
 
- function Food({food,setFood}) {
+ function Food({food,setFood,playing,unitSize,canvasRef}) {
+  // if !playing center food in the middle of the canvas
+  useEffect(()=>{
+    let foodX;
+    let foodY;
+    let canvasWidth = canvasRef.current.children[0].width;
+    let canvasHeight = canvasRef.current.children[0].height;
+    const createFood=()=>{
+      const randomFood = (min,max) => {
+      let randomNum = Math.floor(Math.random()*(max-min)+min)
+      return randomNum
+    }
+     foodX = randomFood(0,(canvasWidth - unitSize))
+     foodY = randomFood(0,canvasHeight - unitSize)
+    console.log({x:foodX,y:foodY})
+    setFood({x:foodX,y:foodY})
+    }
+    if(playing){
+      createFood()
+    }
+  },[playing])
 
   return (
     <div className="food-container">
-      <div id="food"></div>
+      <div id="food" style={{left:`${food.x}px`,top: `${food.y}px`}}></div>
     </div>
   )
 }
@@ -77,6 +97,13 @@ function App() {
   const [btnLable,setBtnLable]=useState('Start')
   const [score,setScore]=useState(0)
 
+  useEffect(()=>{
+    let halfCanvasWidth = canvasRef.current.children[0].width/2;
+    let halfCanvasHeight = canvasRef.current.children[0].height/2;
+    if(gameover){
+      setFood({x:halfCanvasWidth,y:halfCanvasHeight})
+    }
+  },[gameover])
   const startGame = () => {
     console.log('you pressed start')
     //set playing to true
@@ -84,6 +111,7 @@ function App() {
     setScore(score + 1)
     setGameover(false)
     setBtnColor('red')
+    
     btnRef.current.addEventListener('mouseover',e=>{
       let btn = e.target;
       //immediate color change w/o the use of state
@@ -120,7 +148,7 @@ function App() {
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Food {...{food,setFood}}/>
+      <Food {...{food,setFood,playing,unitSize,canvasRef}}/>
       <ScoreBoard  {...{score}}/>
       {/*Start button*/}
       <Btn {...{gameover,startGame,resetGame,setPlaying,setGameover,playing,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}}/>
