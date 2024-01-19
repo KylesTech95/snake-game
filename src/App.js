@@ -83,26 +83,47 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
   )
 }
 // snake actual
-function Snake({snake,playing,setSnake,unitSize}){
-  const [moving,setMoving] = useState(false)
-const updateSnake = () => {
- console.log('test pass')
- let c = 0
- setInterval(()=>{
-  c+=1
-  console.log(c)
- },2000)
-}
-useEffect(()=>{
-let snakeRef = document.querySelectorAll('.snake')
-let setTheSnake = (x,y) => setSnake(()=>({x:x+unitSize,y:y}));
-if(moving){
-  updateSnake()
+function Snake({snake,playing,setSnake,unitSize,gameover}){
+const [moving,setMoving] = useState(false)
+const [bodyLength,setBodyLength] = useState(3)
+const [dir,setDir] = useState('RIGHT')
+
+// store an empty array
+let arr = []
+// snake moves
+const moveSnake=()=>{
+  let head = snake.length;
+  // manipulate snake body with a "for" loop
+  for(let i = 0; i < snake.length; i++){
+    // starting snake path
+    snake[i].x = snake[i].x + unitSize
+    //push all snake-body-objects into the array
+    arr.push(snake[i])
   }
+  // slice off the last bodyLength (snake length).
+  // bodyLength will increase by 1 everytime snake eats the food. (coming soon...)
+  let last3 = arr.slice(-bodyLength)
+  setSnake(last3)
+}
+const startSnakeMove = () => {
+ console.log('snake is moving')
+ let snakeInterval = setInterval(()=>{
+  // list of methods during move
+  moveSnake()
+ },500)
+
+}
+// if moving is true, start snake movement
+useEffect(()=>{
+if(moving) startSnakeMove()
 },[moving])
+// if playing is true or game has started, set moving to true
 useEffect(()=>{
 if(playing){
   setMoving(true)
+}
+else{
+  setMoving(false)
 }
 },[playing])
   // return
@@ -123,7 +144,7 @@ function App() {
   let canvasRef=useRef()
   let btnRef = useRef();
   let unitSize = 25;
-  const [snake,setSnake] = useState([{x:undefined,y:undefined},{x:undefined,y:undefined},{x:undefined,y:undefined}])
+  const [snake,setSnake] = useState([{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0}])
   const [food,setFood]=useState({x:undefined,y:undefined})
   const [playing,setPlaying]=useState(false)
   const [gameover,setGameover]=useState(true)
@@ -136,7 +157,6 @@ function App() {
     let halfCanvasHeight = canvasRef.current.children[0].height/2;
     if(gameover){
       setFood({x:halfCanvasWidth,y:halfCanvasHeight})
-      setSnake([...snake].map((snaker,index) =>( {x:unitSize*index,y:0} )))
     }
   },[gameover])
   const startGame = () => {
@@ -183,7 +203,7 @@ function App() {
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Snake {...{snake,playing}}/>
+      <Snake {...{snake,playing,setSnake,unitSize,gameover}}/>
       <Food {...{food,setFood,playing,unitSize,canvasRef}}/>
       <ScoreBoard  {...{score}}/>
       {/*Start button*/}
