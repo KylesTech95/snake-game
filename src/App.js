@@ -2,22 +2,50 @@ import { useEffect, useRef,useState,useCallback } from 'react';
 import './App.css';
 
 
-function Snake({snakeRef,snake,playing,resetGame,unitSize}){
+function Snake({snakeRef,snake,playing,gameover,score,setSnake,unitSize}){
   const min = 0;
   const max = 475;
+  const [snake2,setSnake2] = useState([{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0}])
   useEffect(()=>{
     if(!playing){
       window.addEventListener('keydown',e=>{
-        return null
-          
+      return null 
       })
     }
-  
-
   },[snakeRef,playing])
+
+  const handleKey = (event) => {
+    if(event.key==='d'){
+      console.log(event.key)
+      for(let body of snake2){
+        console.log(body)
+        body.x+=unitSize
+      }
+    }
+  }
+  const memoizedListener = useCallback(handleKey, [])
+useEffect(()=>{
+  if(gameover && score > 0){
+    console.log('game is over ')
+  }
+    //update snake direction
+  if(playing){
+    window.addEventListener('keypress',memoizedListener)
+    return () => {
+      window.removeEventListener('keypress',memoizedListener);
+    }
+  }
+  else{
+    return () => {
+      window.removeEventListener('keypress',memoizedListener);
+    };
+  }
+
+ },[playing,memoizedListener])
+
   return (
     <>
-    {snake.map((snek,index)=>(
+    {snake2.map((snek,index)=>(
       <div className="snake" ref={snakeRef} key={index} style={{'left':`${snek.x}px`,'top':`${snek.y}px`}}></div>
     ))}
     </>
@@ -110,59 +138,6 @@ function App() {
   const [btnColor,setBtnColor]=useState('green')
   const [btnLable,setBtnLable]=useState('Start')
   const [score,setScore]=useState(0)
-  const handleKey = event => {
-    // console.log(snakeRef.current)
-        //switch statement
-        switch(true){
-          case event.key==='w':
-          console.log('up')
-          setSnake(s=>[{x:s[0].x,y:s[0].y-unitSize}])
-          break;
-          case event.key==='a':
-          console.log('left')
-          setSnake(s=>[{x:s[0].x-unitSize,y:s[0].y}])
-          break;
-          case event.key==='s':
-          console.log('down')
-          setSnake(s=>[{x:s[0].x,y:s[0].y+unitSize}])
-          break;
-          case event.key==='d':
-          console.log('right')
-          setSnake(s=>[{x:s[0].x+unitSize,y:s[0].y}])
-          break;
-          default:
-          console.log(undefined)
-          break;
-        }
-  }
-  const memoizedListener = useCallback(handleKey, [])
-useEffect(()=>{
-    //update snake direction
-    
-
-  if(playing){
-    window.addEventListener('keypress',memoizedListener)
-    return () => {
-      window.removeEventListener('keypress',memoizedListener);
-    }
-  }
-  else{
-    return () => {
-      window.removeEventListener('keypress',memoizedListener);
-    };
-  }
-// else{
-//   return () => {
-//     window.removeEventListener('keypress',memoizedListener);
-//   };
-// }
-  
-  if(gameover && score > 0){
-    console.log('game is fucking over ')
-  }
-// eslint-disable-next-line
-},[playing,memoizedListener])
-
 
   const startGame = () => {
     console.log('you pressed start')
@@ -208,7 +183,7 @@ useEffect(()=>{
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Snake {...{resetGame,snakeRef,snake,playing,unitSize}}/>
+      <Snake {...{gameover,score,resetGame,snakeRef,snake,playing,unitSize}}/>
       <Food {...{food,setFood}}/>
       <ScoreBoard  {...{score}}/>
       {/*Start button*/}
