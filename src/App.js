@@ -1,7 +1,7 @@
 import { useEffect, useRef,useState,useCallback } from 'react';
 import './App.css';
 
- function Food({food,setFood,playing,unitSize,canvasRef}) {
+function Food({food,setFood,playing,unitSize,canvasRef}) {
   // if !playing center food in the middle of the canvas
   useEffect(()=>{
     let foodX;
@@ -82,6 +82,39 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
     </div>
   )
 }
+// snake actual
+function Snake({snake,playing,setSnake,unitSize}){
+  const [moving,setMoving] = useState(false)
+const updateSnake = () => {
+ console.log('test pass')
+ let c = 0
+ setInterval(()=>{
+  c+=1
+  console.log(c)
+ },2000)
+}
+useEffect(()=>{
+let snakeRef = document.querySelectorAll('.snake')
+let setTheSnake = (x,y) => setSnake(()=>({x:x+unitSize,y:y}));
+if(moving){
+  updateSnake()
+  }
+},[moving])
+useEffect(()=>{
+if(playing){
+  setMoving(true)
+}
+},[playing])
+  // return
+  return (
+    <>
+    {/*map over the snake array & set position w/ style*/}
+    {snake.map((snaker,key) => (
+      <div className='snake' key={key} style={{left:`${snaker.x}px`,top:`${snaker.y}px`}}/>
+    ))}
+    </>
+  )
+}
 
 
 
@@ -90,7 +123,8 @@ function App() {
   let canvasRef=useRef()
   let btnRef = useRef();
   let unitSize = 25;
-  const [food,setFood]=useState([{x:undefined,y:undefined}])
+  const [snake,setSnake] = useState([{x:undefined,y:undefined},{x:undefined,y:undefined},{x:undefined,y:undefined}])
+  const [food,setFood]=useState({x:undefined,y:undefined})
   const [playing,setPlaying]=useState(false)
   const [gameover,setGameover]=useState(true)
   const [btnColor,setBtnColor]=useState('green')
@@ -102,6 +136,7 @@ function App() {
     let halfCanvasHeight = canvasRef.current.children[0].height/2;
     if(gameover){
       setFood({x:halfCanvasWidth,y:halfCanvasHeight})
+      setSnake([...snake].map((snaker,index) =>( {x:unitSize*index,y:0} )))
     }
   },[gameover])
   const startGame = () => {
@@ -148,6 +183,7 @@ function App() {
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
+      <Snake {...{snake,playing}}/>
       <Food {...{food,setFood,playing,unitSize,canvasRef}}/>
       <ScoreBoard  {...{score}}/>
       {/*Start button*/}
