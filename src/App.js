@@ -85,7 +85,7 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
 // snake actual
 function Snake({snake,playing,setSnake,unitSize,gameover}){
 const [moving,setMoving] = useState(false)
-const [bodyLength,setBodyLength] = useState(3)
+const [bodyLength,setBodyLength] = useState(snake.length)
 const [dir,setDir] = useState({RIGHT:(param,head,i)=>{
   if(i===head){
     param[i].x = param[i].x + unitSize
@@ -254,7 +254,7 @@ const startSnakeMove = () => {
  let snakeInterval = setInterval(()=>{
   // list of methods during move
   moveSnake()
- },1000)
+ },750)
 }
 
 // useCallback for keypress
@@ -304,7 +304,7 @@ function App() {
   let canvasRef=useRef()
   let btnRef = useRef();
   let unitSize = 25;
-  const [snake,setSnake] = useState([{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0}])
+  const [snake,setSnake] = useState([{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0},{x:unitSize*4,y:0}])
   const [food,setFood]=useState({x:undefined,y:undefined})
   const [playing,setPlaying]=useState(false)
   const [gameover,setGameover]=useState(true)
