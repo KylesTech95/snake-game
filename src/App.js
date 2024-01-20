@@ -128,33 +128,61 @@ DOWN:(param,head,i)=>{
 }
 
 })
+// store an empty array for tracking keypresses
+const [keys,setKeys] = useState(['d']) // start key tracking with d (RIGHT)
 
 // store an empty array
-let arr = [];
+let arr = []
+// trackKeys fn
+const trackKeys = (event) =>{
+    let key = event.key
+    switch(true){
+      case key==='w':
+        console.log(key)
+      setKeys(keys.push(key))
+      break;
+      case key==='a':
+        console.log(key)
+      setKeys(keys.push(key))
+      break;
+      case key==='s':
+        console.log(key)
+      setKeys(keys.push(key))
+      break;
+      case key==='d':
+        console.log(key)
+      setKeys(keys.push(key))
+      break;
+      default:
+      console.log(undefined)
+      break;
+    }
+
+}
+// memoized listener2
+const memoizedListener2 = useCallback(trackKeys,[])
+
 // handle key event
 const handleKey = event => {
+  console.log(keys)
   let head = snake.length-1
   const updateFn = (param,key,head) => {
     for(let i = 0; i < snake.length; i++){
       switch(true){
         case key==='w':
-        console.log('up')
         setDir(dir.UP(snake,head,i))
         break;
         case key==='a':
-        console.log('left')
         setDir(dir.LEFT(snake,head,i))
         break;
         case key==='s':
-        console.log('down')
         setDir(dir.DOWN(snake,head,i))
         break;
         case key==='d':
-        console.log('right')
         setDir(dir.RIGHT(snake,head,i))
         break;
         default:
-        console.log(undefined)
+          console.log(undefined)
         break;
       }
       //push all snake-body-objects into the arra
@@ -192,6 +220,26 @@ const moveSnake=()=>{
   let tail = 0;
   // manipulate snake body with a "for" loop
   for(let i = 0; i < snake.length; i++){
+    // mothod for changing snake's direction
+    let currentDir = keys[keys.length-1]
+    switch(true){
+      case currentDir=='d':
+      setDir(dir.RIGHT(snake,head,i))
+      break;
+      case currentDir=='w':
+      setDir(dir.UP(snake,head,i))
+      break;
+      case currentDir=='a':
+      setDir(dir.LEFT(snake,head,i))
+      break;
+      case currentDir=='s':
+      setDir(dir.DOWN(snake,head,i))
+      break;
+      default:
+      console.log(undefined)
+      break;
+    }
+
     //push all snake-body-objects into the arra
     arr.push(snake[i])
   }
@@ -216,13 +264,16 @@ useEffect(()=>{
 if(moving) {
   startSnakeMove()
   window.addEventListener('keypress',memoizedListener)
+  window.addEventListener('keypress',memoizedListener2)
   return () => {
     window.removeEventListener('keypress',memoizedListener);
+    window.removeEventListener('keypress',memoizedListener2);
   }
 }
 else{
   return () => {
     window.removeEventListener('keypress',memoizedListener);
+    window.removeEventListener('keypress',memoizedListener2);
   };
 }
 },[moving])
