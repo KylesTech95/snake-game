@@ -1,29 +1,9 @@
 import { useEffect, useRef,useState,useCallback } from 'react';
 import './App.css';
-
-function Food({food,setFood,playing,unitSize,canvasRef}) {
+let testArr=[]
+function Food({food,setFood,playing,unitSize,canvasRef,snake,createFood,foodX,foodY}) {
   // if !playing center food in the middle of the canvas
   useEffect(()=>{
-    let foodX;
-    let foodY;
-    let canvasWidth = canvasRef.current.children[0].width;
-    let canvasHeight = canvasRef.current.children[0].height;
-    const createFood=()=>{
-      const randomFood = (min,max) => {
-        // ensure the difference of (max-min) is mod by 5
-        let modCheck = (max,min) =>{
-          let result = Math.floor(Math.random()*(max-min))
-          return result % unitSize !== 0 ? modCheck(max++,min) : result
-        }
-      let randomNum = modCheck(max,min)
-      console.log(randomNum)
-      return randomNum
-    }
-     foodX = randomFood(0,canvasWidth - (unitSize))
-     foodY = randomFood(0,canvasHeight - (unitSize))
-    setFood({x:foodX,y:foodY})
-    console.log({x:foodX,y:foodY})
-    }
     if(playing){
       createFood()
     }
@@ -31,7 +11,7 @@ function Food({food,setFood,playing,unitSize,canvasRef}) {
 
   return (
     <div className="food-container">
-      <div id="food" style={{left:`${food.x}px`,top: `${food.y}px`}}></div>
+      <div id="food" style={{left:`${foodX}px`,top: `${foodY}px`}}></div>
     </div>
   )
 }
@@ -89,7 +69,7 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
   )
 }
 // snake actual
-function Snake({snake,playing,setSnake,unitSize,gameover}){
+function Snake({snake,playing,setSnake,unitSize,createFood,foodX,foodY,setFoodX,setFoodY}){
 const [moving,setMoving] = useState(false)
 const [bodyLength,setBodyLength] = useState(snake.length)
 const [dir,setDir] = useState({RIGHT:(param,head,i)=>{
@@ -252,14 +232,21 @@ const moveSnake=()=>{
   let last3 = arr.slice(-bodyLength)
   setSnake(last3)
 }
+
 // settime out to start snake on START
 const startSnakeMove = () => {
  console.log('snake is moving')
  let snakeInterval = setInterval(()=>{
   // list of methods during move
   moveSnake()
-  console.log(snake[snake.length-1])
- },750)
+  let head = snake[snake.length-1];
+  let last = testArr[testArr.length-1]
+// if food & head both meet, create food
+  if(last.x-head.x==0 && last.y-head.y==0){
+    createFood()
+  }
+  console.log(head,{x:last.x,y:last.y})
+ },350)
 }
 
 // useCallback for keypress
@@ -316,14 +303,18 @@ function App() {
   const [btnColor,setBtnColor]=useState('green')
   const [btnLable,setBtnLable]=useState('Start')
   const [score,setScore]=useState(0)
+  const [foodX,setFoodX]=useState(0)
+  const [foodY,setFoodY]=useState(0)
 
   useEffect(()=>{
     let halfCanvasWidth = canvasRef.current.children[0].width/2;
     let halfCanvasHeight = canvasRef.current.children[0].height/2;
     if(gameover){
-      setFood({x:halfCanvasWidth,y:halfCanvasHeight})
+      setFoodX(halfCanvasWidth)
+      setFoodY(halfCanvasHeight)
     }
   },[gameover])
+  // start game
   const startGame = () => {
     console.log('you pressed start')
     //set playing to true
@@ -344,6 +335,7 @@ function App() {
       btn.style=`border:none;background-color:none`
     })
   }
+  // reset game
   const resetGame = () => {
       setScore(0)
       console.log('game is reset')
@@ -364,13 +356,34 @@ function App() {
       btn.style=`border:none;background-color:none`
     })
   }
-  
+  // generate random food
+  const randomFood = (min,max) => {
+    // ensure the difference of (max-min) is mod by 25(unitSize)
+    let modCheck = (max,min) =>{
+      let result = Math.floor(Math.random()*(max-min))
+      // until the query is true, use recursion
+      return result % unitSize !== 0 ? modCheck(max++,min) : result
+    }
+  let randomNum = modCheck(max,min)
+  // console.log(randomNum)
+  return randomNum
+}
+  // create food
+  const createFood=()=>{
+    let canvasWidth = canvasRef.current.children[0].width;
+    let canvasHeight = canvasRef.current.children[0].height;
+    let FX=randomFood(0,canvasWidth - (unitSize))
+    let FY=randomFood(0,canvasHeight - (unitSize))
+    testArr.push({x:FX,y:FY})
+    setFoodX(()=>testArr[testArr.length-1].x)
+    setFoodY(()=>testArr[testArr.length-1].y)
+  }
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Snake {...{snake,playing,setSnake,unitSize,gameover}}/>
-      <Food {...{food,setFood,playing,unitSize,canvasRef}}/>
-      <ScoreBoard  {...{score}}/>
+      <Snake {...{snake,playing,setSnake,unitSize,gameover,createFood,food,setFood,foodX,foodY,setFoodX,setFoodY}}/>
+      <Food {...{food,setFood,playing,unitSize,canvasRef,snake,createFood,foodX,foodY}}/>
+      <ScoreBoard  {...{score}} />
       {/*Start button*/}
       <Btn {...{gameover,startGame,resetGame,setPlaying,setGameover,playing,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}}/>
     </div>
