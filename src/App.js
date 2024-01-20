@@ -13,8 +13,8 @@ function Food({food,setFood,playing,unitSize,canvasRef}) {
       let randomNum = Math.floor(Math.random()*(max-min)+min)
       return randomNum
     }
-     foodX = randomFood(0,(canvasWidth - unitSize))
-     foodY = randomFood(0,canvasHeight - unitSize)
+     foodX = randomFood(0,canvasWidth - (unitSize))
+     foodY = randomFood(0,canvasHeight - (unitSize))
     console.log({x:foodX,y:foodY})
     setFood({x:foodX,y:foodY})
     }
@@ -254,7 +254,7 @@ const startSnakeMove = () => {
  let snakeInterval = setInterval(()=>{
   // list of methods during move
   moveSnake()
- },500)
+ },1000)
 }
 
 // useCallback for keypress
