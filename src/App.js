@@ -10,13 +10,19 @@ function Food({food,setFood,playing,unitSize,canvasRef}) {
     let canvasHeight = canvasRef.current.children[0].height;
     const createFood=()=>{
       const randomFood = (min,max) => {
-      let randomNum = Math.floor(Math.random()*(max-min)+min)
+        // ensure the difference of (max-min) is mod by 5
+        let modCheck = (max,min) =>{
+          let result = Math.floor(Math.random()*(max-min))
+          return result % unitSize !== 0 ? modCheck(max++,min) : result
+        }
+      let randomNum = modCheck(max,min)
+      console.log(randomNum)
       return randomNum
     }
      foodX = randomFood(0,canvasWidth - (unitSize))
      foodY = randomFood(0,canvasHeight - (unitSize))
-    console.log({x:foodX,y:foodY})
     setFood({x:foodX,y:foodY})
+    console.log({x:foodX,y:foodY})
     }
     if(playing){
       createFood()
@@ -161,7 +167,6 @@ const trackKeys = (event) =>{
 }
 // memoized listener2
 const memoizedListener2 = useCallback(trackKeys,[])
-
 // handle key event
 const handleKey = event => {
   console.log(keys)
@@ -213,7 +218,6 @@ const handleKey = event => {
         break;
       }
 }
-
 // snake moves
 const moveSnake=()=>{
   let head = snake.length-1;
@@ -254,6 +258,7 @@ const startSnakeMove = () => {
  let snakeInterval = setInterval(()=>{
   // list of methods during move
   moveSnake()
+  console.log(snake[snake.length-1])
  },750)
 }
 
