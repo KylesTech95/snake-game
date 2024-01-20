@@ -87,17 +87,52 @@ function Snake({snake,playing,setSnake,unitSize,gameover}){
 const [moving,setMoving] = useState(false)
 const [bodyLength,setBodyLength] = useState(3)
 const [dir,setDir] = useState('RIGHT')
+// handle key event
+const handleKey = event => {
+  let head = snake.length-1
+  // console.log(snakeRef.current)
+      //switch statement
+      switch(true){
+        case event.key==='w':
+        console.log('up')
+  
+        break;
+        case event.key==='a':
+        console.log('left')
+
+        break;
+        case event.key==='s':
+        console.log('down')
+        console.log(snake)
+        
+        break;
+        case event.key==='d':
+        console.log('right')
+
+        break;
+        default:
+        console.log(undefined)
+        break;
+      }
+}
+const memoizedListener = useCallback(handleKey, []) 
 
 // store an empty array
-let arr = []
+let arr = [];
 // snake moves
 const moveSnake=()=>{
-  let head = snake.length;
+  let head = snake.length-1;
+  let tail = 0;
   // manipulate snake body with a "for" loop
   for(let i = 0; i < snake.length; i++){
     // starting snake path
-    snake[i].x = snake[i].x + unitSize
-    //push all snake-body-objects into the array
+    if(i===head){
+      snake[i].x = snake[i].x + unitSize
+    }
+    else{
+      snake[i].x = snake[i+1].x
+    }
+    //push all snake-body-objects into the arra
     arr.push(snake[i])
   }
   // slice off the last bodyLength (snake length).
@@ -105,17 +140,28 @@ const moveSnake=()=>{
   let last3 = arr.slice(-bodyLength)
   setSnake(last3)
 }
+// settime out to start snake on START
 const startSnakeMove = () => {
  console.log('snake is moving')
  let snakeInterval = setInterval(()=>{
   // list of methods during move
   moveSnake()
  },500)
-
 }
 // if moving is true, start snake movement
 useEffect(()=>{
-if(moving) startSnakeMove()
+if(moving) {
+  startSnakeMove()
+  window.addEventListener('keypress',memoizedListener)
+  return () => {
+    window.removeEventListener('keypress',memoizedListener);
+  }
+}
+else{
+  return () => {
+    window.removeEventListener('keypress',memoizedListener);
+  };
+}
 },[moving])
 // if playing is true or game has started, set moving to true
 useEffect(()=>{
