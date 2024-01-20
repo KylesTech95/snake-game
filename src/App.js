@@ -155,7 +155,7 @@ const handleKey = event => {
   console.log(keys)
   let head = snake.length-1
   const updateFn = (param,key,head) => {
-    for(let i = 0; i < snake.length; i++){
+    for(let i = 0; i < snake.length-1; i++){
       switch(true){
         case key==='w':
         setDir(dir.UP(snake,head,i))
@@ -206,7 +206,7 @@ const moveSnake=()=>{
   let head = snake.length-1;
   let tail = 0;
   // manipulate snake body with a "for" loop
-  for(let i = 0; i < snake.length; i++){
+  for(let i = 0; i < snake.length -1; i++){
     // mothod for changing snake's direction
     let currentDir = keys[keys.length-1]
     switch(true){
