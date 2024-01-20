@@ -86,58 +86,112 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
 function Snake({snake,playing,setSnake,unitSize,gameover}){
 const [moving,setMoving] = useState(false)
 const [bodyLength,setBodyLength] = useState(3)
-const [dir,setDir] = useState('RIGHT')
+const [dir,setDir] = useState({RIGHT:(param,head,i)=>{
+  if(i===head){
+    param[i].x = param[i].x + unitSize
+    param[i].y = param[i].y 
+  }
+  else{
+    param[i].x = param[i+1].x
+    param[i].y = param[i+1].y
+  }
+},
+LEFT:(param,head,i)=>{
+  if(i===head){
+    param[i].x = param[i].x - unitSize
+    param[i].y = param[i].y 
+  }
+  else{
+    param[i].x = param[i+1].x
+    param[i].y = param[i+1].y
+  }
+},
+UP:(param,head,i)=>{
+  if(i===head){
+    param[i].y = param[i].y - unitSize
+    param[i].x = param[i].x
+  }
+  else{
+    param[i].x = param[i+1].x
+    param[i].y = param[i+1].y
+  }
+},
+DOWN:(param,head,i)=>{
+  if(i===head){
+    param[i].y = param[i].y + unitSize
+    param[i].x = param[i].x
+  }
+  else{
+    param[i].x = param[i+1].x
+    param[i].y = param[i+1  ].y
+  }
+}
+
+})
+
+// store an empty array
+let arr = [];
 // handle key event
 const handleKey = event => {
   let head = snake.length-1
-  
+  const updateFn = (param,key,head) => {
+    for(let i = 0; i < snake.length; i++){
+      switch(true){
+        case key==='w':
+        console.log('up')
+        setDir(dir.UP(snake,head,i))
+        break;
+        case key==='a':
+        console.log('left')
+        setDir(dir.LEFT(snake,head,i))
+        break;
+        case key==='s':
+        console.log('down')
+        setDir(dir.DOWN(snake,head,i))
+        break;
+        case key==='d':
+        console.log('right')
+        setDir(dir.RIGHT(snake,head,i))
+        break;
+        default:
+        console.log(undefined)
+        break;
+      }
+      //push all snake-body-objects into the arra
+      arr.push(param[i])
+    }
+  }
   // console.log(snakeRef.current)
       //switch statement
       switch(true){
         case event.key==='w':
         console.log('up')
-        snake[head].x = snake[head].x;
-        snake[head].y = snake[head].y - unitSize;
+        updateFn(snake,event.key,head)
         break;
         case event.key==='a':
         console.log('left')
-        snake[head].x = snake[head].x - unitSize;
-        snake[head].y = snake[head].y;
+        updateFn(snake,event.key,head)
         break;
         case event.key==='s':
         console.log('down')
-        snake[head].x = snake[head].x;
-        snake[head].y = snake[head].y + unitSize;
-        
+        updateFn(snake,event.key,head)
         break;
         case event.key==='d':
         console.log('right')
-        snake[head].x = snake[head].x + unitSize;
-        snake[head].y = snake[head].y;
-
+        updateFn(snake,event.key,head)
         break;
         default:
         console.log(undefined)
         break;
       }
 }
-const memoizedListener = useCallback(handleKey, []) 
 
-// store an empty array
-let arr = [];
 // snake moves
 const moveSnake=()=>{
   let head = snake.length-1;
   let tail = 0;
   // manipulate snake body with a "for" loop
   for(let i = 0; i < snake.length; i++){
-    // starting snake path
-    if(i===head){
-      snake[i].x = snake[i].x + unitSize
-    }
-    else{
-      snake[i].x = snake[i+1].x
-    }
     //push all snake-body-objects into the arra
     arr.push(snake[i])
   }
@@ -154,6 +208,9 @@ const startSnakeMove = () => {
   moveSnake()
  },500)
 }
+
+// useCallback for keypress
+const memoizedListener = useCallback(handleKey, []) 
 // if moving is true, start snake movement
 useEffect(()=>{
 if(moving) {
