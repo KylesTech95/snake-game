@@ -306,7 +306,8 @@ function App() {
   let canvasRef=useRef()
   let btnRef = useRef();
   let unitSize = 25;
-  const [snake,setSnake] = useState([{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0},{x:unitSize*4,y:0}])
+  let snakeOrigin=[{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0},{x:unitSize*4,y:0}]
+  const [snake,setSnake] = useState(snakeOrigin)
   const [food,setFood]=useState({x:undefined,y:undefined})
   const [playing,setPlaying]=useState(false)
   const [gameover,setGameover]=useState(true)
@@ -348,7 +349,7 @@ function App() {
   // reset game
   const resetGame = () => {
       testArr=[]
-      setSnake([{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0}])
+      setSnake(snakeOrigin)
       setScore(0)
       console.log('game is reset')
       //set playing to true
