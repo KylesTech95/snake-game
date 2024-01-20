@@ -63,7 +63,7 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
           resetGame()
           clearTimeout(snakeInterval)
         }
-        else{
+        else{ 
           startGame()
         }
       }}>{btnLable}</button>
@@ -71,10 +71,11 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
   )
 }
 // snake actual
-function Snake({resetGame,snake,playing,setSnake,unitSize,createFood,foodX,foodY,setFoodX,setFoodY,gameover,setScore}){
+function Snake({resetGame,snake,playing,setSnake,unitSize,createFood,setScore}){
 const [moving,setMoving] = useState(false)
 const [bodyLength,setBodyLength] = useState(snake.length)
-const [dir,setDir] = useState({RIGHT:(param,head,i)=>{
+const [dir,setDir] = useState({
+RIGHT:(param,head,i)=>{
   if(i===head){
     param[i].x = param[i].x + unitSize
     param[i].y = param[i].y 
@@ -237,6 +238,8 @@ const moveSnake=()=>{
 
 // settime out to start snake on START
 const startSnakeMove = () => {
+  let canvasWidth = 500
+  let canvasHeight=500
  console.log('snake is moving')
   snakeInterval = setInterval(()=>{
   // list of methods during move
@@ -248,11 +251,11 @@ const startSnakeMove = () => {
     createFood()
     setScore(s=>s+1)
   }
-  if(head.x < 0 || head.y < 0 ){
+  if(head.x < 0 || head.y < 0 || head.x >= canvasWidth || head.y >= canvasHeight ){
     resetGame()
     clearInterval(snakeInterval)
+    setKeys(['w'])
   }
-  console.log(head,{x:last.x,y:last.y})
  },350)
 }
 
@@ -344,7 +347,8 @@ function App() {
   }
   // reset game
   const resetGame = () => {
-    setSnake(()=>[{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0},{x:unitSize*4,y:0}])
+      testArr=[]
+      setSnake([{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0}])
       setScore(0)
       console.log('game is reset')
       //set playing to true
@@ -389,10 +393,10 @@ function App() {
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Snake {...{resetGame,score,setScore,snake,playing,setSnake,unitSize,gameover,setGameover,createFood,food,setFood,foodX,foodY,setFoodX,setFoodY}}/>
+      <Snake {...{resetGame,score,setScore,snake,playing,setSnake,unitSize,gameover,setGameover,createFood,food,setFood}}/>
       <Food {...{food,setFood,playing,unitSize,canvasRef,snake,createFood,foodX,foodY}}/>
       <ScoreBoard  {...{score}} />
-      {/*Start button*/}
+      {/*Start/Reset button*/}
       <Btn {...{gameover,startGame,resetGame,setPlaying,setGameover,playing,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}}/>
     </div>
   );
