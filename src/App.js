@@ -90,24 +90,30 @@ const [dir,setDir] = useState('RIGHT')
 // handle key event
 const handleKey = event => {
   let head = snake.length-1
+  
   // console.log(snakeRef.current)
       //switch statement
       switch(true){
         case event.key==='w':
         console.log('up')
-  
+        snake[head].x = snake[head].x;
+        snake[head].y = snake[head].y - unitSize;
         break;
         case event.key==='a':
         console.log('left')
-
+        snake[head].x = snake[head].x - unitSize;
+        snake[head].y = snake[head].y;
         break;
         case event.key==='s':
         console.log('down')
-        console.log(snake)
+        snake[head].x = snake[head].x;
+        snake[head].y = snake[head].y + unitSize;
         
         break;
         case event.key==='d':
         console.log('right')
+        snake[head].x = snake[head].x + unitSize;
+        snake[head].y = snake[head].y;
 
         break;
         default:
