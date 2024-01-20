@@ -71,7 +71,7 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
   )
 }
 // snake actual
-function Snake({resetGame,snake,playing,setSnake,unitSize,createFood,setScore}){
+function Snake({resetGame,snake,playing,setSnake,unitSize,createFood,setScore,snakeOrigin}){
 const [moving,setMoving] = useState(false)
 const [bodyLength,setBodyLength] = useState(snake.length)
 const [dir,setDir] = useState({
@@ -206,7 +206,7 @@ const moveSnake=()=>{
   let head = snake.length-1;
   let tail = 0;
   // manipulate snake body with a "for" loop
-  for(let i = 0; i < snake.length -1; i++){
+  for(let i = 0; i < snake.length; i++){
     // mothod for changing snake's direction
     let currentDir = keys[keys.length-1]
     switch(true){
@@ -349,13 +349,13 @@ function App() {
   // reset game
   const resetGame = () => {
       testArr=[]
-      setSnake(snakeOrigin)
       setScore(0)
       console.log('game is reset')
       //set playing to true
       setPlaying(false)
       setGameover(true)
       setBtnColor('green')
+      setSnake(s => s = snakeOrigin)
       btnRef.current.addEventListener('mouseover',e=>{
         let btn = e.target;
         //immediate color change w/o the use of state
@@ -368,6 +368,9 @@ function App() {
       let btn = e.target;
       btn.style=`border:none;background-color:none`
     })
+    setTimeout(()=>{
+      console.log(snake)
+    },2000)
   }
   // generate random food
   const randomFood = (min,max) => {
@@ -394,7 +397,7 @@ function App() {
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Snake {...{resetGame,score,setScore,snake,playing,setSnake,unitSize,gameover,setGameover,createFood,food,setFood}}/>
+      <Snake {...{snakeOrigin,resetGame,score,setScore,snake,playing,setSnake,unitSize,gameover,setGameover,createFood,food,setFood}}/>
       <Food {...{food,setFood,playing,unitSize,canvasRef,snake,createFood,foodX,foodY}}/>
       <ScoreBoard  {...{score}} />
       {/*Start/Reset button*/}
