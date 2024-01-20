@@ -1,6 +1,7 @@
 import { useEffect, useRef,useState,useCallback } from 'react';
 import './App.css';
-let testArr=[]
+let testArr=[],
+    snakeInterval;
 function Food({food,setFood,playing,unitSize,canvasRef,snake,createFood,foodX,foodY}) {
   // if !playing center food in the middle of the canvas
   useEffect(()=>{
@@ -60,6 +61,7 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
       <button id="btn" onClick={()=>{
         if(playing){
           resetGame()
+          clearTimeout(snakeInterval)
         }
         else{
           startGame()
@@ -69,7 +71,7 @@ function Btn({startGame,playing,setPlaying,gameover,setGameover,resetGame,btnCol
   )
 }
 // snake actual
-function Snake({snake,playing,setSnake,unitSize,createFood,foodX,foodY,setFoodX,setFoodY}){
+function Snake({resetGame,snake,playing,setSnake,unitSize,createFood,foodX,foodY,setFoodX,setFoodY,gameover,setScore}){
 const [moving,setMoving] = useState(false)
 const [bodyLength,setBodyLength] = useState(snake.length)
 const [dir,setDir] = useState({RIGHT:(param,head,i)=>{
@@ -236,7 +238,7 @@ const moveSnake=()=>{
 // settime out to start snake on START
 const startSnakeMove = () => {
  console.log('snake is moving')
- let snakeInterval = setInterval(()=>{
+  snakeInterval = setInterval(()=>{
   // list of methods during move
   moveSnake()
   let head = snake[snake.length-1];
@@ -244,6 +246,11 @@ const startSnakeMove = () => {
 // if food & head both meet, create food
   if(last.x-head.x==0 && last.y-head.y==0){
     createFood()
+    setScore(s=>s+1)
+  }
+  if(head.x < 0 || head.y < 0 ){
+    resetGame()
+    clearInterval(snakeInterval)
   }
   console.log(head,{x:last.x,y:last.y})
  },350)
@@ -337,6 +344,7 @@ function App() {
   }
   // reset game
   const resetGame = () => {
+    setSnake(()=>[{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0},{x:unitSize*4,y:0}])
       setScore(0)
       console.log('game is reset')
       //set playing to true
@@ -381,7 +389,7 @@ function App() {
   return (
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
-      <Snake {...{snake,playing,setSnake,unitSize,gameover,createFood,food,setFood,foodX,foodY,setFoodX,setFoodY}}/>
+      <Snake {...{resetGame,score,setScore,snake,playing,setSnake,unitSize,gameover,setGameover,createFood,food,setFood,foodX,foodY,setFoodX,setFoodY}}/>
       <Food {...{food,setFood,playing,unitSize,canvasRef,snake,createFood,foodX,foodY}}/>
       <ScoreBoard  {...{score}} />
       {/*Start button*/}
