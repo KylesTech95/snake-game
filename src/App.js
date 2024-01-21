@@ -5,8 +5,10 @@ import ScoreBoard from './ScoreBoard.js'
 import Snake from './Snake.js'
 import Btn from './Btn.js'
 
+// store an empty array
 let testArr=[]
 let snakeInterval;
+
 function App() {
   //global
   let canvasRef=useRef()
@@ -14,7 +16,7 @@ function App() {
   let unitSize = 25;
   let snakeOrigin=[{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0},{x:unitSize*4,y:0}]
   const [snake,setSnake] = useState(snakeOrigin)
-  const [food,setFood]=useState({x:undefined,y:undefined})
+  const [tracker,setTracker]=useState([])
   const [playing,setPlaying]=useState(false)
   const [gameover,setGameover]=useState(true)
   const [btnColor,setBtnColor]=useState('green')
@@ -22,6 +24,7 @@ function App() {
   const [score,setScore]=useState(0)
   const [foodX,setFoodX]=useState(0)
   const [foodY,setFoodY]=useState(0)
+  const [keys,setKeys] = useState(['d']) // start key tracking with d (RIGHT)
 
   useEffect(()=>{
     let halfCanvasWidth = canvasRef.current.children[0].width/2;
@@ -29,10 +32,12 @@ function App() {
     if(gameover){
       setFoodX(halfCanvasWidth)
       setFoodY(halfCanvasHeight)
+      setSnake(snakeOrigin)
     }
+
   },[gameover])
   // start game
-  const startGame = () => {    
+  const startGame = () => {   
     console.log('you pressed start')
     //set playing to true
     setPlaying(true)
@@ -54,14 +59,18 @@ function App() {
   }
   // reset game
   const resetGame = () => {
-      testArr=[]
+      testArr=[];
+      setTracker([])
       setScore(0)
       console.log('game is reset')
+      console.log(snake)
+      console.log(tracker)
+      console.log(keys)
+      console.log('food pos: '+ [foodX,foodY])
       //set playing to true
       setPlaying(false)
       setGameover(true)
       setBtnColor('green')
-      setSnake(snakeOrigin)
       btnRef.current.addEventListener('mouseover',e=>{
         let btn = e.target;
         //immediate color change w/o the use of state
@@ -74,9 +83,6 @@ function App() {
       let btn = e.target;
       btn.style=`border:none;background-color:none`
     })
-    setTimeout(()=>{
-      console.log(snake)
-    },2000)
   }
   // generate random food
   const randomFood = (min,max) => {
@@ -104,6 +110,11 @@ function App() {
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
       <Snake {...{
+        tracker,
+        setTracker,
+        keys,
+        setKeys,
+        snakeInterval,
         resetGame,
         snake,
         playing,
@@ -111,7 +122,6 @@ function App() {
         unitSize,
         createFood,
         setScore,
-        snakeInterval,
         testArr
         }}/>
       <Food {...{

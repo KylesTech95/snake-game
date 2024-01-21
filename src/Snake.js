@@ -1,7 +1,7 @@
 import { useEffect,React,useState,useCallback } from 'react';
 
 // snake actual
-export default function Snake({testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore}){
+export default function Snake({tracker,setTracker,arr,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore}){
     const [moving,setMoving] = useState(false)
     const [bodyLength,setBodyLength] = useState(snake.length)
     const [dir,setDir] = useState({
@@ -48,12 +48,10 @@ export default function Snake({testArr,snakeInterval,resetGame,snake,playing,set
     
     })
     // store an empty array for tracking keypresses
-    const [keys,setKeys] = useState(['d']) // start key tracking with d (RIGHT)
     
-    // store an empty array
-    let arr = []
     // trackKeys fn
     const trackKeys = (event) =>{
+      if(playing){
         let key = event.key
         switch(true){
           case key==='w':
@@ -76,10 +74,11 @@ export default function Snake({testArr,snakeInterval,resetGame,snake,playing,set
           console.log(undefined)
           break;
         }
+      }
     
     }
     // memoized listener2
-    const memoizedListener2 = useCallback(trackKeys,[])
+    const memoizedListener2 = useCallback(trackKeys,[playing])
     // handle key event
     const handleKey = event => {
       console.log(keys)
@@ -103,8 +102,8 @@ export default function Snake({testArr,snakeInterval,resetGame,snake,playing,set
               console.log(undefined)
             break;
           }
-          //push all snake-body-objects into the arra
-          arr.push(param[i])
+          //push all snake-body-objects into the array
+          setTracker(tracker.push(snake[i]))
         }
       }
       // console.log(snakeRef.current)
@@ -132,7 +131,7 @@ export default function Snake({testArr,snakeInterval,resetGame,snake,playing,set
           }
     }
     // snake moves
-    const moveSnake=()=>{
+    const moveSnake=(interval,width,height,rh)=>{
       let head = snake.length-1;
       let tail = 0;
       // manipulate snake body with a "for" loop
@@ -158,33 +157,33 @@ export default function Snake({testArr,snakeInterval,resetGame,snake,playing,set
         }
     
         //push all snake-body-objects into the arra
-        arr.push(snake[i])
+        setTracker(tracker.push(snake[i]))
       }
       // slice off the last bodyLength (snake length).
       // bodyLength will increase by 1 everytime snake eats the food. (coming soon...)
-      let last3 = arr.slice(-bodyLength)
-      setSnake(last3)
+      if(rh.x < 0 || rh.y < 0 || rh.x >= width || rh.y >= height ){
+        clearInterval(interval)
+        setKeys(['d'])
+        resetGame()
+      }
+      else{
+        setSnake(tracker.slice(-bodyLength))
+      }
     }
-    
     // settime out to start snake on START
     const startSnakeMove = () => {
-      let canvasWidth = 500
+      let canvasWidth=500
       let canvasHeight=500
-     console.log('snake is moving')
+      console.log('snake is moving')
       snakeInterval = setInterval(()=>{
       // list of methods during move
-      moveSnake()
-      let head = snake[snake.length-1];
-      let last = testArr[testArr.length-1]
+      let realHead = snake[snake.length-1];
+      let last = testArr[testArr.length-1];
+      moveSnake(snakeInterval,canvasWidth,canvasHeight,realHead);
     // if food & head both meet, create food
-      if(last.x-head.x==0 && last.y-head.y==0){
+      if(last.x-realHead.x==0 && last.y-realHead.y==0){
         createFood()
         setScore(s=>s+1)
-      }
-      if(head.x < 0 || head.y < 0 || head.x >= canvasWidth || head.y >= canvasHeight ){
-        clearInterval(snakeInterval)
-        resetGame()
-        setKeys(['w'])
       }
      },100)
     }
@@ -206,6 +205,7 @@ export default function Snake({testArr,snakeInterval,resetGame,snake,playing,set
       return () => {
         window.removeEventListener('keypress',memoizedListener);
         window.removeEventListener('keypress',memoizedListener2);
+        clearTimeout(snakeInterval)
       };
     }
     },[moving])
