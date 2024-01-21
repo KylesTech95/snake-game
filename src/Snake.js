@@ -1,7 +1,7 @@
 import { useEffect,React,useState,useCallback } from 'react';
 
 // snake actual
-export default function Snake({tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore}){
+export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore}){
     const [moving,setMoving] = useState(false)
     const [bodyLength,setBodyLength] = useState(snake.length)
     const [dir,setDir] = useState({
@@ -215,6 +215,9 @@ export default function Snake({tracker,setTracker,keys,setKeys,testArr,snakeInte
       window.addEventListener('keypress',memoizedListener)
       window.addEventListener('keypress',memoizedListener2)
       return () => {
+        clearTimeout(snakeInterval)
+        setDir(dir)
+        setKeys(['d'])
         window.removeEventListener('keypress',memoizedListener);
         window.removeEventListener('keypress',memoizedListener2);
       }
@@ -223,8 +226,7 @@ export default function Snake({tracker,setTracker,keys,setKeys,testArr,snakeInte
       return () => {
         window.removeEventListener('keypress',memoizedListener);
         window.removeEventListener('keypress',memoizedListener2);
-        clearTimeout(snakeInterval)
-      };
+        };
     }
     },[moving])
     // if playing is true or game has started, set moving to true

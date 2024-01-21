@@ -38,7 +38,6 @@ export default function Btn({snakeInterval,startGame,playing,resetGame,btnColor,
         <button id="btn" onClick={()=>{
           if(playing){
             resetGame()
-            clearTimeout(snakeInterval)
           }
           else{ 
             startGame()

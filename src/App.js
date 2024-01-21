@@ -60,6 +60,8 @@ function App() {
   }
   // reset game
   const resetGame = () => {
+    console.log(playing)
+
       testArr=[];
       setTracker([])
       setScore(0)
@@ -119,6 +121,7 @@ function App() {
         resetGame,
         snake,
         playing,
+        setGameover,
         setSnake,
         unitSize,
         createFood,
