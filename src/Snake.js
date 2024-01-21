@@ -1,7 +1,7 @@
 import { useEffect,React,useState,useCallback } from 'react';
 
 // snake actual
-export default function Snake({tracker,setTracker,arr,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore}){
+export default function Snake({tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore}){
     const [moving,setMoving] = useState(false)
     const [bodyLength,setBodyLength] = useState(snake.length)
     const [dir,setDir] = useState({
@@ -52,7 +52,7 @@ export default function Snake({tracker,setTracker,arr,keys,setKeys,testArr,snake
     // trackKeys fn
     const trackKeys = (event) =>{
       if(playing){
-        let key = event.key
+        let key = event.key || window
         switch(true){
           case key==='w':
             console.log(key)
@@ -84,19 +84,19 @@ export default function Snake({tracker,setTracker,arr,keys,setKeys,testArr,snake
       console.log(keys)
       let head = snake.length-1
       const updateFn = (param,key,head) => {
-        for(let i = 0; i < snake.length-1; i++){
+        for(let i = 0; i < param.length-1; i++){
           switch(true){
             case key==='w':
-            setDir(dir.UP(snake,head,i))
+            setDir(dir.UP(param,head,i))
             break;
             case key==='a':
-            setDir(dir.LEFT(snake,head,i))
+            setDir(dir.LEFT(param,head,i))
             break;
             case key==='s':
-            setDir(dir.DOWN(snake,head,i))
+            setDir(dir.DOWN(param,head,i))
             break;
             case key==='d':
-            setDir(dir.RIGHT(snake,head,i))
+            setDir(dir.RIGHT(param,head,i))
             break;
             default:
               console.log(undefined)
@@ -133,7 +133,6 @@ export default function Snake({tracker,setTracker,arr,keys,setKeys,testArr,snake
     // snake moves
     const moveSnake=(interval,width,height,rh)=>{
       let head = snake.length-1;
-      let tail = 0;
       // manipulate snake body with a "for" loop
       for(let i = 0; i < snake.length; i++){
         // mothod for changing snake's direction
@@ -165,11 +164,27 @@ export default function Snake({tracker,setTracker,arr,keys,setKeys,testArr,snake
         clearInterval(interval)
         setKeys(['d'])
         resetGame()
+        setDir(dir)
       }
       else{
         setSnake(tracker.slice(-bodyLength))
       }
     }
+    // const growSnake = (tail,next2Tail) => {
+    //   let tail2x = next2Tail.x;
+    //   let tail2y = next2Tail.y;
+    //   let tailx = tail.x;
+    //   let taily = tail.y;
+
+    //   switch(true){
+    //     case tail2y-taily===0:
+    //     // statement
+    //     break;
+        
+    //   }
+      
+
+    // }
     // settime out to start snake on START
     const startSnakeMove = () => {
       let canvasWidth=500
@@ -178,10 +193,13 @@ export default function Snake({tracker,setTracker,arr,keys,setKeys,testArr,snake
       snakeInterval = setInterval(()=>{
       // list of methods during move
       let realHead = snake[snake.length-1];
+      // let tail = snake[0]
+      // let next2Tail = snake[1]
       let last = testArr[testArr.length-1];
       moveSnake(snakeInterval,canvasWidth,canvasHeight,realHead);
     // if food & head both meet, create food
       if(last.x-realHead.x==0 && last.y-realHead.y==0){
+        // growSnake(tail,next2Tail)
         createFood()
         setScore(s=>s+1)
       }

@@ -44,6 +44,7 @@ function App() {
     setScore(score + 1)
     setGameover(false)
     setBtnColor('red')
+    console.log(keys)
     
     btnRef.current.addEventListener('mouseover',e=>{
       let btn = e.target;
