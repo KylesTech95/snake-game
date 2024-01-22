@@ -1,6 +1,6 @@
 import { useEffect,React,useState,useCallback } from 'react';
 // snake actual
-export default function Snake({displayRef,autoTextFn,scoreRef,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore,score}){
+export default function Snake({setDisplay,displayRef,autoTextFn,scoreRef,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore,score}){
     const [moving,setMoving] = useState(false)
     const [dir,setDir] = useState({
     RIGHT:(param,head,i)=>{
@@ -164,6 +164,7 @@ export default function Snake({displayRef,autoTextFn,scoreRef,tracker,setTracker
       // bodyLength will increase by 1 everytime snake eats the food. (coming soon...)
       if(rh.x < 0 || rh.y < 0 || rh.x >= width || rh.y >= height || snake_collapses){
         clearInterval(interval)
+        setDisplay(d=>d='')
         setKeys(['d'])
         resetGame()
         setDir(dir)
@@ -176,10 +177,6 @@ export default function Snake({displayRef,autoTextFn,scoreRef,tracker,setTracker
       let canvasHeight=500
       console.log('snake is moving')
       snakeInterval = setInterval(()=>{
-        // let newScore = setTimeout(()=>{
-        //   let currentScore = scoreRef.current.textContent
-        //   autoTextFn(`${currentScore}`,displayRef.current)
-        // },4000)
       // list of methods during move
       let realHead = snake[snake.length-1];
       let last = testArr[testArr.length-1];
@@ -190,7 +187,9 @@ export default function Snake({displayRef,autoTextFn,scoreRef,tracker,setTracker
         createFood()
         setScore(s=>s+1)
         setSnake(snake=[tail,...snake])
-        // snakeDoc.forEach(body=>body.style='background: cyan;')
+        setTimeout(()=>{
+          setDisplay(scoreRef.current.textContent)
+        },3500)
       }
      },100)
     }

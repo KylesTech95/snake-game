@@ -40,9 +40,9 @@ function App() {
     }
 // eslint-disable-next-line
   },[gameover])
- 
+
   //type function
-  function autoTextFn(text, heading) {
+  function autoTextFn(text, heading,speed) {
     text = [...text]//text.split``
     let i = 0, arr = [], len = text.length
     let timer = setInterval(() => {
@@ -54,11 +54,11 @@ function App() {
       // console.log(arr)//receiver
       // console.log(arr.length,len)//compare arr's length w/ original text length
       if (arr.length === len) clearInterval(timer)//clearInterval once both lengths are the same.
-    }, 35)
+    }, speed)
   }
   // start game
-  const startGame = () => { 
-    autoTextFn('Game started...Win as many rounds as you can!',displayRef.current)  
+  const startGame = () => {
+    autoTextFn('Game started...Win as many rounds as you can!',displayRef.current,55)
     console.log('you pressed start')
     //set playing to true
     setPlaying(true)
@@ -66,13 +66,13 @@ function App() {
     setGameover(false)
     setBtnColor('red')
     console.log(keys)
-    
+
     btnRef.current.addEventListener('mouseover',e=>{
       let btn = e.target;
       //immediate color change w/o the use of state
       btn.style=`border:none;background-color:red;`
       btn.style=`border:none;background-color:${btnColor}`
-      
+
     })
     btnRef.current.addEventListener('mouseout',e=>{
       let btn = e.target;
@@ -83,13 +83,13 @@ function App() {
   const resetGame = () => {
       let finalScore = scoreRef.current.textContent
       setTimeout(()=>{
-        autoTextFn(`You Completed ${finalScore} Rounds! Play again!`,displayRef.current)
-      },1000)
+        autoTextFn(`You Completed ${finalScore} Round${finalScore=='1'?'': 's'}! Play again!`,displayRef.current,35)
+      },score > 1 ? 750 : 1750)
       testArr=[];
       setTracker([])
       setScore(0)
       console.log('game is reset')
-      console.log(snake)
+      // console.log(snake)
       // console.log(tracker)
       // console.log(keys)
       // console.log('food pos: '+ [foodX,foodY])
@@ -102,9 +102,9 @@ function App() {
         //immediate color change w/o the use of state
         btn.style=`border:none;background-color:green;`
         btn.style=`border:none;background-color:${btnColor}`
-        
+
       })
-    
+
     btnRef.current.addEventListener('mouseout',e=>{
       let btn = e.target;
       btn.style=`border:none;background-color:none`
@@ -137,6 +137,7 @@ function App() {
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
       <Snake {...{
+        setDisplay,
         displayRef,
         autoTextFn,
         scoreRef,

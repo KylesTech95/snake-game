@@ -37,7 +37,7 @@ export default function Btn({snakeInterval,startGame,playing,resetGame,btnColor,
       <div className="btn-container" ref={btnRef}>
         <button id="btn" onClick={()=>{
           if(playing){
-            resetGame()
+              resetGame()
           }
           else{ 
             startGame()
