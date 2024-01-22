@@ -4,6 +4,7 @@ import Food from './Food.js'
 import ScoreBoard from './ScoreBoard.js'
 import Snake from './Snake.js'
 import Btn from './Btn.js'
+import Display from './Display.js'
 
 // store an empty array
 let testArr=[]
@@ -12,8 +13,11 @@ let snakeInterval;
 function App() {
   //global
   let canvasRef=useRef()
-  let btnRef = useRef();
+  let btnRef = useRef()
+  let displayRef = useRef()
+  let scoreRef = useRef()
   let unitSize = 25;
+  const [display,setDisplay]=useState('Start game')
   let snakeOrigin=[{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0},{x:unitSize*4,y:0}]
   const [snake,setSnake] = useState(snakeOrigin)
   const [tracker,setTracker]=useState([snake[snake.length-1]])
@@ -37,8 +41,24 @@ function App() {
 // eslint-disable-next-line
   },[gameover])
  
+  //type function
+  function autoTextFn(text, heading) {
+    text = [...text]//text.split``
+    let i = 0, arr = [], len = text.length
+    let timer = setInterval(() => {
+      let take = text.shift(text[i])
+      i += 1
+      arr.push(take)
+      heading.textContent = arr.join``
+      // console.log(text)//sender
+      // console.log(arr)//receiver
+      // console.log(arr.length,len)//compare arr's length w/ original text length
+      if (arr.length === len) clearInterval(timer)//clearInterval once both lengths are the same.
+    }, 35)
+  }
   // start game
-  const startGame = () => {   
+  const startGame = () => { 
+    autoTextFn('Game started...Win as many rounds as you can!',displayRef.current)  
     console.log('you pressed start')
     //set playing to true
     setPlaying(true)
@@ -61,11 +81,14 @@ function App() {
   }
   // reset game
   const resetGame = () => {
-
+      let finalScore = scoreRef.current.textContent
+      setTimeout(()=>{
+        autoTextFn(`You Completed ${finalScore} Rounds! Play again!`,displayRef.current)
+      },1000)
       testArr=[];
       setTracker([])
       setScore(0)
-      // console.log('game is reset')
+      console.log('game is reset')
       console.log(snake)
       // console.log(tracker)
       // console.log(keys)
@@ -110,9 +133,13 @@ function App() {
     setFoodY(()=>testArr[testArr.length-1].y)
   }
   return (
+    <>
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual" height="500" width="500"/>
       <Snake {...{
+        displayRef,
+        autoTextFn,
+        scoreRef,
         tracker,
         setTracker,
         keys,
@@ -136,7 +163,7 @@ function App() {
         foodX,
         foodY,
         }}/>
-      <ScoreBoard  {...{score}} />
+      <ScoreBoard  {...{score,scoreRef}} />
       {/*Start/Reset button*/}
       <Btn {...{
         startGame,
@@ -150,6 +177,8 @@ function App() {
         snakeInterval
         }}/>
     </div>
+    <Display {...{display,setDisplay,displayRef}}/>
+  </>
   );
 }
 export default App;

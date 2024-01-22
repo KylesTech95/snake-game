@@ -1,7 +1,6 @@
 import { useEffect,React,useState,useCallback } from 'react';
-
 // snake actual
-export default function Snake({tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore,score}){
+export default function Snake({displayRef,autoTextFn,scoreRef,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore,score}){
     const [moving,setMoving] = useState(false)
     const [dir,setDir] = useState({
     RIGHT:(param,head,i)=>{
@@ -177,6 +176,10 @@ export default function Snake({tracker,setTracker,keys,setKeys,testArr,snakeInte
       let canvasHeight=500
       console.log('snake is moving')
       snakeInterval = setInterval(()=>{
+        // let newScore = setTimeout(()=>{
+        //   let currentScore = scoreRef.current.textContent
+        //   autoTextFn(`${currentScore}`,displayRef.current)
+        // },4000)
       // list of methods during move
       let realHead = snake[snake.length-1];
       let last = testArr[testArr.length-1];
@@ -189,7 +192,7 @@ export default function Snake({tracker,setTracker,keys,setKeys,testArr,snakeInte
         setSnake(snake=[tail,...snake])
         // snakeDoc.forEach(body=>body.style='background: cyan;')
       }
-     },75)
+     },100)
     }
     
     // useCallback for keypress

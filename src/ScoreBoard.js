@@ -1,10 +1,10 @@
 import React from 'react';
 
 
-export default function ScoreBoard({score}){
+export default function ScoreBoard({score,scoreRef}){
     return(
     <div className="score-container">
-      <div id="score">{score}</div>
+      <div ref={scoreRef} id="score">{score}</div>
     </div>
       )
   }
