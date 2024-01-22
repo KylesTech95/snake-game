@@ -1,6 +1,6 @@
 import { useEffect,React,useState,useCallback } from 'react';
 // snake actual
-export default function Snake({setDisplay,displayRef,autoTextFn,scoreRef,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore,score}){
+export default function Snake({setDisplay,canvasRef,scoreRef,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore,score}){
     const [moving,setMoving] = useState(false)
     const [dir,setDir] = useState({
     RIGHT:(param,head,i)=>{
@@ -173,8 +173,8 @@ export default function Snake({setDisplay,displayRef,autoTextFn,scoreRef,tracker
     }
     // settime out to start snake on START
     const startSnakeMove = () => {
-      let canvasWidth=500
-      let canvasHeight=500
+      let canvasWidth=canvasRef.current.children[0].width
+      let canvasHeight=canvasRef.current.children[0].height
       console.log('snake is moving')
       snakeInterval = setInterval(()=>{
       // list of methods during move
@@ -189,7 +189,7 @@ export default function Snake({setDisplay,displayRef,autoTextFn,scoreRef,tracker
         setSnake(snake=[tail,...snake])
         setTimeout(()=>{
           setDisplay(scoreRef.current.textContent)
-        },3500)
+        },2000)
       }
      },100)
     }

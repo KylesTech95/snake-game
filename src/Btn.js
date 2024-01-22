@@ -1,6 +1,6 @@
 import { useEffect,React } from 'react';
 
-export default function Btn({snakeInterval,startGame,playing,resetGame,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}){
+export default function Btn({startGame,playing,resetGame,btnColor,setBtnColor,btnRef,btnLable,setBtnLable}){
     useEffect(()=>{
       if(playing){
         setBtnLable('Reset')

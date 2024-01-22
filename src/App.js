@@ -5,6 +5,7 @@ import ScoreBoard from './ScoreBoard.js'
 import Snake from './Snake.js'
 import Btn from './Btn.js'
 import Display from './Display.js'
+import Keypad from './Keypad.js'
 
 // store an empty array
 let testArr=[]
@@ -16,6 +17,7 @@ function App() {
   let btnRef = useRef()
   let displayRef = useRef()
   let scoreRef = useRef()
+  let keypadRef = useRef()
   let unitSize = 25;
   const [display,setDisplay]=useState('Start game')
   let snakeOrigin=[{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0},{x:unitSize*4,y:0}]
@@ -29,6 +31,7 @@ function App() {
   const [foodX,setFoodX]=useState(0)
   const [foodY,setFoodY]=useState(0)
   const [keys,setKeys] = useState(['d']) // start key tracking with d (RIGHT)
+  const [keypadHidden,setKeypadHidden]=useState('block')
 
   useEffect(()=>{
     let halfCanvasWidth = canvasRef.current.children[0].width/2;
@@ -58,7 +61,7 @@ function App() {
   }
   // start game
   const startGame = () => {
-    autoTextFn('Game started...Win as many rounds as you can!',displayRef.current,55)
+    autoTextFn('Game started...Win as many rounds as you can!',displayRef.current,35)
     console.log('you pressed start')
     //set playing to true
     setPlaying(true)
@@ -84,7 +87,7 @@ function App() {
       let finalScore = scoreRef.current.textContent
       setTimeout(()=>{
         autoTextFn(`You Completed ${finalScore} Round${finalScore=='1'?'': 's'}! Play again!`,displayRef.current,35)
-      },score > 1 ? 750 : 1750)
+      },score > 1 ? 750 : 2000)
       testArr=[];
       setTracker([])
       setScore(0)
@@ -135,8 +138,9 @@ function App() {
   return (
     <>
     <div id="canvas-container" ref={canvasRef}>
-      <canvas id="canvas-actual" height="500" width="500"/>
+      <canvas id="canvas-actual" height={window.innerHeight <= 1000 ? "400" : "500"} width={window.innerWidth <= 428 ? "400" : "500"}/>
       <Snake {...{
+        canvasRef,
         setDisplay,
         displayRef,
         autoTextFn,
@@ -165,6 +169,7 @@ function App() {
         foodY,
         }}/>
       <ScoreBoard  {...{score,scoreRef}} />
+      <Keypad {...{keypadHidden,keypadRef}}/>
       {/*Start/Reset button*/}
       <Btn {...{
         startGame,
@@ -175,7 +180,6 @@ function App() {
         btnRef,
         btnLable,
         setBtnLable,
-        snakeInterval
         }}/>
     </div>
     <Display {...{display,setDisplay,displayRef}}/>
