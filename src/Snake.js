@@ -3,7 +3,7 @@ import { useEffect,React,useState,useCallback } from 'react';
 // snake actual
 export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore}){
     const [moving,setMoving] = useState(false)
-    const [bodyLength,setBodyLength] = useState(snake.length)
+    const [bodyLength,setBodyLength] = useState(5)
     const [dir,setDir] = useState({
     RIGHT:(param,head,i)=>{
       if(i===head){
@@ -81,7 +81,6 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
     const memoizedListener2 = useCallback(trackKeys,[playing])
     // handle key event
     const handleKey = event => {
-      console.log(keys)
       let head = snake.length-1
       const updateFn = (param,key,head) => {
         for(let i = 0; i < param.length-1; i++){
@@ -170,21 +169,6 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
         setSnake(tracker.slice(-bodyLength))
       }
     }
-    // const growSnake = (tail,next2Tail) => {
-    //   let tail2x = next2Tail.x;
-    //   let tail2y = next2Tail.y;
-    //   let tailx = tail.x;
-    //   let taily = tail.y;
-
-    //   switch(true){
-    //     case tail2y-taily===0:
-    //     // statement
-    //     break;
-        
-    //   }
-      
-
-    // }
     // settime out to start snake on START
     const startSnakeMove = () => {
       let canvasWidth=500
@@ -193,13 +177,12 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
       snakeInterval = setInterval(()=>{
       // list of methods during move
       let realHead = snake[snake.length-1];
-      // let tail = snake[0]
-      // let next2Tail = snake[1]
+      let tail = snake[0]
+      let next2Tail = snake[1]
       let last = testArr[testArr.length-1];
       moveSnake(snakeInterval,canvasWidth,canvasHeight,realHead);
     // if food & head both meet, create food
       if(last.x-realHead.x==0 && last.y-realHead.y==0){
-        // growSnake(tail,next2Tail)
         createFood()
         setScore(s=>s+1)
       }
@@ -227,7 +210,7 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
         window.removeEventListener('keypress',memoizedListener);
         window.removeEventListener('keypress',memoizedListener2);
         };
-    }
+      }
     },[moving])
     // if playing is true or game has started, set moving to true
     useEffect(()=>{
