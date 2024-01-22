@@ -2,6 +2,7 @@ import { useEffect,React,useState,useCallback } from 'react';
 // snake actual
 export default function Snake({setDisplay,canvasRef,scoreRef,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore,score}){
     const [moving,setMoving] = useState(false)
+    const [myAgent,setMyAgent]=useState('click')
     const [dir,setDir] = useState({
     RIGHT:(param,head,i)=>{
       if(i===head){
@@ -45,7 +46,9 @@ export default function Snake({setDisplay,canvasRef,scoreRef,tracker,setTracker,
     }
     
     })
-
+    useEffect(()=>{
+      return window.navigator.userAgent.match(/iphone|samsung/i) ? setMyAgent('touchstart'): setMyAgent('click');
+    },[])
     // trackKeys fn
     const trackKeys = (event) =>{
       if(playing){
@@ -104,8 +107,7 @@ export default function Snake({setDisplay,canvasRef,scoreRef,tracker,setTracker,
         }
       }
     
-    }
-    
+    } 
     const handleKeyPad = event => {
       let btn = event.target
       let head = snake.length-1
@@ -279,7 +281,7 @@ export default function Snake({setDisplay,canvasRef,scoreRef,tracker,setTracker,
           setDisplay(scoreRef.current.textContent)
         },2000)
       }
-     },100)
+     },myAgent=='touchstart'||canvasRef.current.clientWidth < 500?200:100)
     }
 
     // callbacks
@@ -297,24 +299,24 @@ export default function Snake({setDisplay,canvasRef,scoreRef,tracker,setTracker,
       startSnakeMove()
       window.addEventListener('keypress',memoizedListener)
       window.addEventListener('keypress',memoizedListener2)
-      window.addEventListener('click',memoizedListener3);
-      window.addEventListener('click',memoizedListener4);
+      window.addEventListener(myAgent,memoizedListener3);
+      window.addEventListener(myAgent,memoizedListener4);
       return () => {
         clearTimeout(snakeInterval)
         setDir(dir)
         setKeys(['d'])
         window.removeEventListener('keypress',memoizedListener);
         window.removeEventListener('keypress',memoizedListener2);
-        window.removeEventListener('click',memoizedListener3);
-        window.removeEventListener('click',memoizedListener4);
+        window.removeEventListener(myAgent,memoizedListener3);
+        window.removeEventListener(myAgent,memoizedListener4);
       }
     }
     else{
       return () => {
         window.removeEventListener('keypress',memoizedListener);
         window.removeEventListener('keypress',memoizedListener2);
-        window.removeEventListener('click',memoizedListener3);
-        window.removeEventListener('click',memoizedListener4);
+        window.removeEventListener(myAgent,memoizedListener3);
+        window.removeEventListener(myAgent,memoizedListener4);
         };
       }
       // eslint-disable-next-line
