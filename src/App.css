@@ -7,6 +7,9 @@
   font-family: 'Rubik Doodle Shadow';
 
 }
+body{
+  background:silver;
+}
 #keypad-container{
   display:flex;
   flex-direction:column;
@@ -35,6 +38,7 @@
   margin:0 auto;
   position: absolute;
   font-size:33px;
+  
 }
 .key-left:hover,
 .key-right:hover,
@@ -83,7 +87,7 @@ body{
   }
   25%{
     color:#333;
-    transform: scale(1.33);
+    transform: scale(1.25);
   }
   50%{
     color:red;
@@ -91,7 +95,7 @@ body{
   }
   75%{
     color:#333;
-    transform: scale(1.33);
+    transform: scale(1.25);
   }
   100%{
     color:blue;
@@ -110,6 +114,8 @@ body{
 }
 #canvas-actual{
   background:#333;
+  height:500px;
+  width:500px;
 }
 
 .snake{
@@ -139,6 +145,7 @@ body{
   box-shadow:0 .25rem 6px 1.5px #333;
   transform:scale(1.05);
   border:none;
+  margin-top:-2rem;
 }
 .btn-container:hover{
   animation:startMe 1.25s ease infinite alternate
@@ -170,13 +177,42 @@ body{
   font-size:2rem;
 }
 
-@media screen and (max-width: 475px){
+@media screen and (max-width: 1350px){
   #display{
-    font-size:20px;
+    font-size:21px;
+    text-align: center;
+    text-shadow: none;
   }
   #display-container{
-    top:2.5%;
     height: 100px;
-    width: 400px;
+    width:100%;
+    text-align: center;
+    left: 0;
+    top:2%;
   }
+  #canvas-actual{
+    width:350px;
+    height:350px;
+  }
+  body{
+    overflow:hidden;
+  }
+}
+@media screen and (max-width: 450px){
+#canvas-container{
+  margin-top:6rem;
+}
+
+  #canvas-actual{
+    width:275px;
+    height:275px;
+  }
+ .btn-container{
+  margin-top:-.75rem;
+ }
+ .snake,
+ #food{
+height:20px;
+width:20px;
+ }
 }

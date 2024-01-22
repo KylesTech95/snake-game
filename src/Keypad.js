@@ -1,6 +1,6 @@
 import { useEffect,React,useState,useCallback } from 'react';
 
-export default function Keypad({keypadHidden,keypadRef}) {
+export default function Keypad({setKeypadHidden,keypadHidden,keypadRef}) {
     useEffect(()=>{
         let keys = document.querySelectorAll('.k')
         for(let x = 0; x < keys.length; x++){
@@ -17,10 +17,13 @@ export default function Keypad({keypadHidden,keypadRef}) {
                 keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;bottom: 5px`
             }
         }
+        if(window.innerWidth <= 1350){
+            setKeypadHidden('visible')
+        }
     },[])
   return (
     <>
-    <div id="keypad-container" ref={keypadRef} style={{display:keypadHidden}}>
+    <div id="keypad-container" ref={keypadRef} style={{visibility:keypadHidden}}>
       <ul className="keypad-list">
         <div className="k key-left material-symbols-outlined">arrow_back</div>
         <div className="k key-right material-symbols-outlined">arrow_forward</div>

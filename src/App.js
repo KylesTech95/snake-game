@@ -31,9 +31,10 @@ function App() {
   const [foodX,setFoodX]=useState(0)
   const [foodY,setFoodY]=useState(0)
   const [keys,setKeys] = useState(['d']) // start key tracking with d (RIGHT)
-  const [keypadHidden,setKeypadHidden]=useState('block')
+  const [keypadHidden,setKeypadHidden]=useState('hidden')
 
   useEffect(()=>{
+    console.log(navigator)
     let halfCanvasWidth = canvasRef.current.children[0].width/2;
     let halfCanvasHeight = canvasRef.current.children[0].height/2;
     if(gameover){
@@ -87,7 +88,7 @@ function App() {
       let finalScore = scoreRef.current.textContent
       setTimeout(()=>{
         autoTextFn(`You Completed ${finalScore} Round${finalScore=='1'?'': 's'}! Play again!`,displayRef.current,35)
-      },score > 1 ? 750 : 2000)
+      },score > 1 ? 250 : 1850)
       testArr=[];
       setTracker([])
       setScore(0)
@@ -138,7 +139,7 @@ function App() {
   return (
     <>
     <div id="canvas-container" ref={canvasRef}>
-      <canvas id="canvas-actual" height={window.innerHeight <= 1000 ? "400" : "500"} width={window.innerWidth <= 428 ? "400" : "500"}/>
+      <canvas id="canvas-actual"/>
       <Snake {...{
         canvasRef,
         setDisplay,
@@ -169,7 +170,7 @@ function App() {
         foodY,
         }}/>
       <ScoreBoard  {...{score,scoreRef}} />
-      <Keypad {...{keypadHidden,keypadRef}}/>
+      <Keypad {...{keypadHidden,setKeypadHidden,keypadRef}}/>
       {/*Start/Reset button*/}
       <Btn {...{
         startGame,

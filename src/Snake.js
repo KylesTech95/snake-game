@@ -74,9 +74,97 @@ export default function Snake({setDisplay,canvasRef,scoreRef,tracker,setTracker,
       }
     
     }
-    // memoized listener2
-    // eslint-disable-next-line
-    const memoizedListener2 = useCallback(trackKeys,[playing])
+    const trackKeysKeyPad = (event) =>{
+      if(playing){
+        let convertKey;
+        let key = event.target.classList || window
+        switch(true){
+          case key.contains('key-up'):
+            convertKey='w'
+          setKeys(keys.push(convertKey))
+          break;
+          case key.contains('key-down'):
+            convertKey='s'
+            console.log(key)
+          setKeys(keys.push(convertKey))
+          break;
+          case key.contains('key-left'):
+            convertKey='a'
+            console.log(key)
+          setKeys(keys.push(convertKey))
+          break;
+          case key.contains('key-right'):
+            convertKey='d'
+            console.log(key)
+          setKeys(keys.push(convertKey))
+          break;
+          default:
+          console.log(undefined)
+          break;
+        }
+      }
+    
+    }
+    
+    const handleKeyPad = event => {
+      let btn = event.target
+      let head = snake.length-1
+      const updateFn = (param,key,head) => {
+        for(let i = 0; i < param.length-1; i++){
+          let convertKey;
+          switch(true){
+            case btn.classList.contains('key-up'):
+              console.log('up')
+              convertKey='w'
+            setDir(dir.UP(param,head,i))
+            break;
+            case btn.classList.contains('key-left'):
+              console.log('left')
+              convertKey='a'
+            setDir(dir.LEFT(param,head,i))
+            break;
+            case btn.classList.contains('key-down'):
+              console.log('down')
+              convertKey='s'
+            setDir(dir.DOWN(param,head,i))
+            break;
+            case btn.classList.contains('key-right'):
+              console.log('right')
+              convertKey='d'
+            setDir(dir.RIGHT(param,head,i))
+            break;
+            default:
+              console.log(undefined)
+            break;
+          }
+          //push all snake-body-objects into the array
+          setTracker(tracker.push(snake[i]))
+        }
+      }
+      // console.log(snakeRef.current)
+          //switch statement
+          switch(true){
+            case btn.classList.contains('key-up'):
+            console.log('up')
+            updateFn(snake,event.key,head)
+            break;
+            case btn.classList.contains('key-left'):
+            console.log('left')
+            updateFn(snake,event.key,head)
+            break;
+            case btn.classList.contains('key-down'):
+            console.log('down')
+            updateFn(snake,event.key,head)
+            break;
+            case btn.classList.contains('key-right'):
+            console.log('right')
+            updateFn(snake,event.key,head)
+            break;
+            default:
+            console.log(undefined)
+            break;
+          }
+    }
     // handle key event
     const handleKey = event => {
       let head = snake.length-1
@@ -173,8 +261,8 @@ export default function Snake({setDisplay,canvasRef,scoreRef,tracker,setTracker,
     }
     // settime out to start snake on START
     const startSnakeMove = () => {
-      let canvasWidth=canvasRef.current.children[0].width
-      let canvasHeight=canvasRef.current.children[0].height
+      let canvasWidth=canvasRef.current.children[0].clientWidth
+      let canvasHeight=canvasRef.current.children[0].clientHeight
       console.log('snake is moving')
       snakeInterval = setInterval(()=>{
       // list of methods during move
@@ -193,28 +281,40 @@ export default function Snake({setDisplay,canvasRef,scoreRef,tracker,setTracker,
       }
      },100)
     }
-    
-    // useCallback for keypress
+
+    // callbacks
     // eslint-disable-next-line
-    const memoizedListener = useCallback(handleKey, []) 
+    const memoizedListener4 = useCallback(trackKeysKeyPad,[playing])
+    // eslint-disable-next-line
+    const memoizedListener3 = useCallback(handleKeyPad,[playing])
+    // eslint-disable-next-line
+    const memoizedListener2 = useCallback(trackKeys,[playing])
+    // eslint-disable-next-line
+    const memoizedListener = useCallback(handleKey, [playing]) 
     // if moving is true, start snake movement
     useEffect(()=>{
     if(moving) {
       startSnakeMove()
       window.addEventListener('keypress',memoizedListener)
       window.addEventListener('keypress',memoizedListener2)
+      window.addEventListener('click',memoizedListener3);
+      window.addEventListener('click',memoizedListener4);
       return () => {
         clearTimeout(snakeInterval)
         setDir(dir)
         setKeys(['d'])
         window.removeEventListener('keypress',memoizedListener);
         window.removeEventListener('keypress',memoizedListener2);
+        window.removeEventListener('click',memoizedListener3);
+        window.removeEventListener('click',memoizedListener4);
       }
     }
     else{
       return () => {
         window.removeEventListener('keypress',memoizedListener);
         window.removeEventListener('keypress',memoizedListener2);
+        window.removeEventListener('click',memoizedListener3);
+        window.removeEventListener('click',memoizedListener4);
         };
       }
       // eslint-disable-next-line
