@@ -156,9 +156,14 @@ export default function Snake({tracker,setTracker,keys,setKeys,testArr,snakeInte
         //push all snake-body-objects into the array
         setTracker(tracker.push(snake[i]))
       }
+      // target snake's body and cut off the head
+      let snake_body = [...snake].slice(0,-1)
+      // filter snake's body by comparing it with snake's head.
+      // if the array is empty, then false else true  
+      let snake_collapses = snake_body.filter((bod=>bod.x===rh.x&&bod.y===rh.y)||[]).length!==0
       // slice off the last bodyLength (snake length).
       // bodyLength will increase by 1 everytime snake eats the food. (coming soon...)
-      if(rh.x < 0 || rh.y < 0 || rh.x >= width || rh.y >= height ){
+      if(rh.x < 0 || rh.y < 0 || rh.x >= width || rh.y >= height || snake_collapses){
         clearInterval(interval)
         setKeys(['d'])
         resetGame()
