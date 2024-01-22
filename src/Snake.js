@@ -1,14 +1,13 @@
 import { useEffect,React,useState,useCallback } from 'react';
 
 // snake actual
-export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore}){
+export default function Snake({tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore,score}){
     const [moving,setMoving] = useState(false)
-    const [bodyLength,setBodyLength] = useState(5)
     const [dir,setDir] = useState({
     RIGHT:(param,head,i)=>{
       if(i===head){
         param[i].x = param[i].x + unitSize
-        param[i].y = param[i].y 
+        // param[i].y = param[i].y 
       }
       else{
         param[i].x = param[i+1].x
@@ -18,7 +17,7 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
     LEFT:(param,head,i)=>{
       if(i===head){
         param[i].x = param[i].x - unitSize
-        param[i].y = param[i].y 
+        // param[i].y = param[i].y 
       }
       else{
         param[i].x = param[i+1].x
@@ -28,7 +27,7 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
     UP:(param,head,i)=>{
       if(i===head){
         param[i].y = param[i].y - unitSize
-        param[i].x = param[i].x
+        // param[i].x = param[i].x
       }
       else{
         param[i].x = param[i+1].x
@@ -38,7 +37,7 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
     DOWN:(param,head,i)=>{
       if(i===head){
         param[i].y = param[i].y + unitSize
-        param[i].x = param[i].x
+        // param[i].x = param[i].x
       }
       else{
         param[i].x = param[i+1].x
@@ -47,8 +46,7 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
     }
     
     })
-    // store an empty array for tracking keypresses
-    
+
     // trackKeys fn
     const trackKeys = (event) =>{
       if(playing){
@@ -78,6 +76,7 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
     
     }
     // memoized listener2
+    // eslint-disable-next-line
     const memoizedListener2 = useCallback(trackKeys,[playing])
     // handle key event
     const handleKey = event => {
@@ -137,16 +136,16 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
         // mothod for changing snake's direction
         let currentDir = keys[keys.length-1]
         switch(true){
-          case currentDir=='d':
+          case currentDir==='d':
           setDir(dir.RIGHT(snake,head,i))
           break;
-          case currentDir=='w':
+          case currentDir==='w':
           setDir(dir.UP(snake,head,i))
           break;
-          case currentDir=='a':
+          case currentDir==='a':
           setDir(dir.LEFT(snake,head,i))
           break;
-          case currentDir=='s':
+          case currentDir==='s':
           setDir(dir.DOWN(snake,head,i))
           break;
           default:
@@ -154,7 +153,7 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
           break;
         }
     
-        //push all snake-body-objects into the arra
+        //push all snake-body-objects into the array
         setTracker(tracker.push(snake[i]))
       }
       // slice off the last bodyLength (snake length).
@@ -165,9 +164,7 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
         resetGame()
         setDir(dir)
       }
-      else{
-        setSnake(tracker.slice(-bodyLength))
-      }
+      
     }
     // settime out to start snake on START
     const startSnakeMove = () => {
@@ -177,19 +174,21 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
       snakeInterval = setInterval(()=>{
       // list of methods during move
       let realHead = snake[snake.length-1];
-      let tail = snake[0]
-      let next2Tail = snake[1]
       let last = testArr[testArr.length-1];
+      let tail = {x:snake[0].x,y:snake[0].y}
       moveSnake(snakeInterval,canvasWidth,canvasHeight,realHead);
     // if food & head both meet, create food
-      if(last.x-realHead.x==0 && last.y-realHead.y==0){
+      if(last.x-realHead.x===0 && last.y-realHead.y===0){
         createFood()
         setScore(s=>s+1)
+        setSnake(snake=[tail,...snake])
+        // snakeDoc.forEach(body=>body.style='background: cyan;')
       }
-     },100)
+     },75)
     }
     
     // useCallback for keypress
+    // eslint-disable-next-line
     const memoizedListener = useCallback(handleKey, []) 
     // if moving is true, start snake movement
     useEffect(()=>{
@@ -211,6 +210,7 @@ export default function Snake({setGameover,tracker,setTracker,keys,setKeys,testA
         window.removeEventListener('keypress',memoizedListener2);
         };
       }
+      // eslint-disable-next-line
     },[moving])
     // if playing is true or game has started, set moving to true
     useEffect(()=>{

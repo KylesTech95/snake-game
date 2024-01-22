@@ -16,7 +16,7 @@ function App() {
   let unitSize = 25;
   let snakeOrigin=[{x:0,y:0},{x:unitSize,y:0},{x:unitSize*2,y:0},{x:unitSize*3,y:0},{x:unitSize*4,y:0}]
   const [snake,setSnake] = useState(snakeOrigin)
-  const [tracker,setTracker]=useState([])
+  const [tracker,setTracker]=useState([snake[snake.length-1]])
   const [playing,setPlaying]=useState(false)
   const [gameover,setGameover]=useState(true)
   const [btnColor,setBtnColor]=useState('green')
@@ -34,8 +34,9 @@ function App() {
       setFoodY(halfCanvasHeight)
       setSnake(snakeOrigin)
     }
-
+// eslint-disable-next-line
   },[gameover])
+ 
   // start game
   const startGame = () => {   
     console.log('you pressed start')
@@ -60,16 +61,15 @@ function App() {
   }
   // reset game
   const resetGame = () => {
-    console.log(playing)
 
       testArr=[];
       setTracker([])
       setScore(0)
-      console.log('game is reset')
+      // console.log('game is reset')
       console.log(snake)
-      console.log(tracker)
-      console.log(keys)
-      console.log('food pos: '+ [foodX,foodY])
+      // console.log(tracker)
+      // console.log(keys)
+      // console.log('food pos: '+ [foodX,foodY])
       //set playing to true
       setPlaying(false)
       setGameover(true)
@@ -126,9 +126,11 @@ function App() {
         unitSize,
         createFood,
         setScore,
+        score,
         testArr
         }}/>
       <Food {...{
+        snake,
         playing,
         createFood,
         foodX,
