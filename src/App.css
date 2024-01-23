@@ -306,7 +306,7 @@ width:20px;
      #display-container{
       width: 100%;
       left:0;
-      top:-2%;
+      top:-4%;
       
      }
      #display{
@@ -316,7 +316,7 @@ width:20px;
     }
     #keypad-container{
       position: absolute;
-      left:-100%;
+      left:-75%;
       top:30%;
     }
 
