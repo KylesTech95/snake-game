@@ -232,7 +232,7 @@ width:20px;
 }
 @media screen and (max-height:690px){
   #canvas-container{
-    margin-top:-4rem;
+    margin-top:-6rem;
     gap:0;
   }
   
