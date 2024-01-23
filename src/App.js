@@ -68,7 +68,7 @@ function App() {
       autoTextFn(['Gooo...','You got it!','Game Started','Score as high as you can!'][Math.floor(Math.random()*4)],displayRef.current,35)
     }
     else{
-      displayRef.current.textContent = 'Game started...Win as many rounds as you can!'
+      displayRef.current.textContent = ['Gooo...','You got it!','Game Started','Score as high as you can!'][Math.floor(Math.random()*4)]
     }
     console.log('you pressed start')
     //set playing to true
