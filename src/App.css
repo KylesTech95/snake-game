@@ -273,4 +273,52 @@ width:20px;
     bottom:-130px;
   }
   }
+  @media screen and (max-height:400px){
+    #canvas-container{
+      margin-top:0;
+      gap:0;
+    }
+    
+      #canvas-actual{
+        width:275px;
+        height:275px;
+      }
+     .btn-container{
+      margin-top:-.75rem;
+      transform: scale(1);
+      position:absolute;
+      right: -50%;
+      bottom: 100px;
+     }
+     #btn{
+      margin-top:0;
+      font-size:1rem;
+     }
+     #score{
+      margin-top:1rem;
+      display:none;
+     }
+     .snake,
+     #food{
+    height:22px;
+    width:22px;
+     }
+     #display-container{
+      width: 100%;
+      left:0;
+      top:-2%;
+      
+     }
+     #display{
+      font-size:15px;
+      text-align: center;
+      text-shadow: none;
+    }
+    #keypad-container{
+      position: absolute;
+      left:-100%;
+      top:30%;
+    }
+
+    }
   
