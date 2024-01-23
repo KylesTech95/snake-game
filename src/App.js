@@ -1,11 +1,11 @@
 import { useEffect,React,useRef,useState } from 'react';
 import './App.css';
-import Food from './Food.js'
-import ScoreBoard from './ScoreBoard.js'
-import Snake from './Snake.js'
-import Btn from './Btn.js'
-import Display from './Display.js'
-import Keypad from './Keypad.js'
+import Food from './components/Food.js'
+import ScoreBoard from './components/ScoreBoard.js'
+import Snake from './components/Snake.js'
+import Btn from './components/Btn.js'
+import Display from './components/Display.js'
+import Keypad from './components/Keypad.js'
 
 // store an empty array
 let testArr=[]
