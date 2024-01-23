@@ -65,7 +65,7 @@ function App() {
   // start game
   const startGame = () => {
     if(myAgent ==='click'){
-      autoTextFn(['Gooo...','You got it!','Game Startted','Score as high as you can!'][Math.floor(Math.random()*4)],displayRef.current,35)
+      autoTextFn(['Gooo...','You got it!','Game Started','Score as high as you can!'][Math.floor(Math.random()*4)],displayRef.current,35)
     }
     else{
       displayRef.current.textContent = 'Game started...Win as many rounds as you can!'
