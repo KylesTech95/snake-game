@@ -322,7 +322,7 @@ width:20px;
     }
 
     }
-    @media screen and (max-height:1200px) and (max-width:860px){
+    /* @media screen and (max-height:1200px) and (max-width:860px){
      
        .btn-container{
         margin-top:-.75rem;
@@ -351,7 +351,7 @@ width:20px;
         
       }
   
-      }
+      } */
       @media screen and (max-height:400px){
         #canvas-container{
           margin-top:0;
@@ -407,11 +407,11 @@ width:20px;
             margin-top:-.75rem;
             transform: scale(1);
             position:absolute;
-            bottom: -65%;
+            bottom: -68%;
             
            }
            #display-container{
-            top:15%;
+            top:8%;
            }
            #btn{
             margin-top:0;
@@ -421,11 +421,11 @@ width:20px;
             display:none;
            }
           #canvas-container{
-            margin-top:-2rem;
+            margin-top:-7rem;
           }
           #keypad-container{
             position: absolute;
-            bottom:-40%;
+            bottom:-45%;
             
             
           }
