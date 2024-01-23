@@ -35,7 +35,6 @@ body{
 .key-down{
   border: 4px solid #fff;
   margin:0 auto;
-  position: absolute;
   font-size:40px;
 }
 .key-left:hover,
