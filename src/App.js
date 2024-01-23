@@ -37,8 +37,8 @@ function App() {
 
   useEffect(()=>{
     console.log(navigator)
-    let halfCanvasWidth = canvasRef.current.children[0].width/2;
-    let halfCanvasHeight = canvasRef.current.children[0].height/2;
+    let halfCanvasWidth = canvasRef.current.children[0].clientWidth/2;
+    let halfCanvasHeight = canvasRef.current.children[0].clientHeight/2;
     if(gameover){
       setFoodX(halfCanvasWidth)
       setFoodY(halfCanvasHeight)
