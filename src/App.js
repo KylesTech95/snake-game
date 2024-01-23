@@ -134,7 +134,7 @@ function App() {
   const randomFood = (min,max) => {
     // ensure the difference of (max-min) is mod by 25(unitSize)
     let modCheck = (max,min) =>{
-      let result = Math.floor(Math.random()*(max-min))
+      let result = Math.round((Math.random()*(max-min)+min)/unitSize)*unitSize
       // until the query is true, use recursion
       return result % unitSize !== 0 ? modCheck(max++,min) : result
     }
@@ -144,8 +144,8 @@ function App() {
 }
   // create food
   const createFood=()=>{
-    let canvasWidth = canvasRef.current.children[0].width;
-    let canvasHeight = canvasRef.current.children[0].height;
+    let canvasWidth = canvasRef.current.children[0].clientWidth;
+    let canvasHeight = canvasRef.current.children[0].clientHeight;
     let FX=randomFood(0,canvasWidth - (unitSize))
     let FY=randomFood(0,canvasHeight - (unitSize))
     testArr.push({x:FX,y:FY})
