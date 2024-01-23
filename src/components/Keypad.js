@@ -2,6 +2,7 @@ import { useEffect,React,useState,useCallback } from 'react';
 
 export default function Keypad({setKeypadHidden,keypadHidden,keypadRef}) {
     useEffect(()=>{
+      window.onload=()=>{
         let keys = document.querySelectorAll('.k')
         for(let x = 0; x < keys.length; x++){
             if(x===0){
@@ -20,6 +21,8 @@ export default function Keypad({setKeypadHidden,keypadHidden,keypadRef}) {
         if(window.innerWidth <= 1300){
             setKeypadHidden('visible')
         }
+      }
+        
     },[])
   return (
     <>
