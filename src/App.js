@@ -32,6 +32,8 @@ function App() {
   const [foodY,setFoodY]=useState(0)
   const [keys,setKeys] = useState(['d']) // start key tracking with d (RIGHT)
   const [keypadHidden,setKeypadHidden]=useState('hidden')
+  const [myAgent,setMyAgent]=useState('click')
+
 
   useEffect(()=>{
     console.log(navigator)
@@ -62,7 +64,12 @@ function App() {
   }
   // start game
   const startGame = () => {
-    autoTextFn('Game started...Win as many rounds as you can!',displayRef.current,35)
+    if(myAgent ==='click'){
+      autoTextFn('Game started...Win as many rounds as you can!',displayRef.current,35)
+    }
+    else{
+      displayRef.current.textContent = 'Game started...Win as many rounds as you can!'
+    }
     console.log('you pressed start')
     //set playing to true
     setPlaying(true)
@@ -87,7 +94,12 @@ function App() {
   const resetGame = () => {
       let finalScore = scoreRef.current.textContent
       setTimeout(()=>{
-        autoTextFn(`You Completed ${finalScore} Round${finalScore=='1'?'': 's'}! Play again!`,displayRef.current,35)
+        if(myAgent==='click'){
+          autoTextFn(`You Completed ${finalScore} Round${finalScore=='1'?'': 's'}! Play again!`,displayRef.current,35)
+        }
+        else{
+          displayRef.current.textContent = `You Completed ${finalScore} Round${finalScore=='1'?'': 's'}! Play again!`
+        }
       },score > 1 ? 250 : 1850)
       testArr=[];
       setTracker([])
@@ -141,6 +153,8 @@ function App() {
     <div id="canvas-container" ref={canvasRef}>
       <canvas id="canvas-actual"/>
       <Snake {...{
+        myAgent,
+        setMyAgent,
         canvasRef,
         setDisplay,
         displayRef,

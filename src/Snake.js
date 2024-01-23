@@ -1,8 +1,7 @@
 import { useEffect,React,useState,useCallback } from 'react';
 // snake actual
-export default function Snake({setDisplay,canvasRef,scoreRef,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore,score}){
+export default function Snake({myAgent,setMyAgent,setDisplay,canvasRef,scoreRef,tracker,setTracker,keys,setKeys,testArr,snakeInterval,resetGame,snake,playing,setSnake,unitSize,createFood,setScore,score}){
     const [moving,setMoving] = useState(false)
-    const [myAgent,setMyAgent]=useState('click')
     const [dir,setDir] = useState({
     RIGHT:(param,head,i)=>{
       if(i===head){

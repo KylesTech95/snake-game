@@ -8,13 +8,13 @@ export default function Keypad({setKeypadHidden,keypadHidden,keypadRef}) {
                 keys[x].style=`left: 25px;`
             }
             if(x===1){
-                keys[x].style=`right: 35px;`
+                keys[x].style=`right: 25px;`
             }
             if(x===2){
-                keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;top: 5px`
+                keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;top: 0px`
             }
             if(x===3){
-                keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;bottom: 5px`
+                keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;bottom: 0px`
             }
         }
         if(window.innerWidth <= 1350){
