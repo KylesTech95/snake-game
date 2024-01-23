@@ -100,7 +100,7 @@ function App() {
         else{
           displayRef.current.textContent = `You Completed ${finalScore} Round${finalScore=='1'?'': 's'}! Play again!`
         }
-      },score > 1 ? 250 : 1850)
+      },score > 1 ? 100 : 1850)
       testArr=[];
       setTracker([])
       setScore(0)
