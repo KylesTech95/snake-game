@@ -65,7 +65,7 @@ function App() {
   // start game
   const startGame = () => {
     if(myAgent ==='click'){
-      autoTextFn('Game started...Win as many rounds as you can!',displayRef.current,35)
+      autoTextFn(['Gooo...','You got it!','Game Startted','Score as high as you can!'][Math.floor(Math.random()*4)],displayRef.current,35)
     }
     else{
       displayRef.current.textContent = 'Game started...Win as many rounds as you can!'
@@ -93,6 +93,7 @@ function App() {
   // reset game
   const resetGame = () => {
       let finalScore = scoreRef.current.textContent
+      btnRef.current.style='pointer-events:none'
       setTimeout(()=>{
         if(myAgent==='click'){
           autoTextFn(`You Completed ${finalScore} Round${finalScore=='1'?'': 's'}! Play again!`,displayRef.current,35)
@@ -100,7 +101,10 @@ function App() {
         else{
           displayRef.current.textContent = `You Completed ${finalScore} Round${finalScore=='1'?'': 's'}! Play again!`
         }
-      },score > 1 ? 100 : 1850)
+      },1500)
+      setTimeout(()=>{
+        btnRef.current.style='pointer-events:auto'
+      },3250)
       testArr=[];
       setTracker([])
       setScore(0)

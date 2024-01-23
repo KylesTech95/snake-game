@@ -17,7 +17,7 @@ export default function Keypad({setKeypadHidden,keypadHidden,keypadRef}) {
                 keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;bottom: 0px`
             }
         }
-        if(window.innerWidth <= 1350){
+        if(window.innerWidth <= 1300){
             setKeypadHidden('visible')
         }
     },[])
