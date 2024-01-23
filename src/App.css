@@ -276,6 +276,7 @@ width:20px;
   @media screen and (max-height:400px){
     #canvas-container{
       margin-top:0;
+      margin-bottom:1rem;
       gap:0;
     }
     
