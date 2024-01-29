@@ -177,7 +177,7 @@ body{
   margin-bottom:-4rem;
 }
 
-@media screen and (max-width: 1300px){
+@media (max-width: 1300px){
   #display{
     font-size:21px;
     text-align: center;
@@ -198,7 +198,7 @@ body{
     overflow:hidden;
   }
 }
-@media screen and (max-width: 450px){
+@media (max-width: 450px){
 #canvas-container{
   margin-top:6rem;
 }
@@ -231,7 +231,7 @@ width:20px;
 }
 
   /*portrait phone*/
-  @media screen and (max-width:400px) and (max-height: 900px){
+  @media (max-width:400px) and (max-height: 900px){
     #canvas-container{
       margin-top:0;
       margin-bottom:6rem;
@@ -281,7 +281,7 @@ width:20px;
     }
 
     }
-    /* @media screen and (max-height:1200px) and (max-width:860px){
+    /* @media (max-height:1200px) and (max-width:860px){
      
        .btn-container{
         margin-top:-.75rem;
@@ -312,7 +312,7 @@ width:20px;
   
       } */
       /*phone landscape*/
-      @media screen and (max-height:400px) and (max-width:900px){
+      @media (max-height:400px) and (max-width:900px){
         #canvas-container{
           margin-top:0;
           margin-bottom:-1.5rem;
@@ -361,7 +361,7 @@ width:20px;
         }
     
         }
-        /* @media screen and (max-height:860px) and (max-width:1200px){
+        /* @media (max-height:860px) and (max-width:1200px){
          
            .btn-container{
             margin-top:-.75rem;
