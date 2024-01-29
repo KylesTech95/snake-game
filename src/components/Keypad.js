@@ -6,16 +6,16 @@ export default function Keypad({setKeypadHidden,keypadHidden,keypadRef}) {
         let keys = document.querySelectorAll('.k')
         for(let x = 0; x < keys.length; x++){
             if(x===0){
-                keys[x].style=`left: 25px;position:absolute;`
+                keys[x].style=`left: 5px;position:absolute;`
             }
             if(x===1){
-                keys[x].style=`right: 25px;position:absolute;`
+                keys[x].style=`right: 0px;position:absolute;`
             }
             if(x===2){
-                keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;top: 0px;position:absolute;`
+                keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;top: -20px;position:absolute;`
             }
             if(x===3){
-                keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;bottom: 0px;position:absolute;`
+                keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;bottom: -20px;position:absolute;`
             }
         }
         if(window.innerWidth <= 1300){
