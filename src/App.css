@@ -320,6 +320,7 @@ body{
           top:-25px;
           
          }
+         
          #display{
           font-size:15px;
           text-align: center;
@@ -327,9 +328,16 @@ body{
         }
         #keypad-container{
           position: absolute;
-          left:-250px;
+          left:-227px;
           top:35%;
         }
+        .key-left,
+        .key-right,
+        .key-up,
+        .key-down{
+          margin:0 auto;
+          font-size:45px;
+}
     
         }
         /* @media (max-height:860px) and (max-width:1200px){
