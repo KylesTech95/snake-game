@@ -198,39 +198,41 @@ body{
     overflow:hidden;
   }
 }
-@media (max-width: 450px){
-#canvas-container{
-  margin-top:6rem;
-}
 
-  #canvas-actual{
-    width:275px;
-    height:275px;
-  }
- .btn-container{
-  margin-top:-.75rem;
-  transform: scale(1);
- }
- #btn{
-  font-size:1.25rem;
- }
- #score{
-  margin-top:0;
- }
- .snake,
- #food{
-height:20px;
-width:20px;
- }
 
- #display{
-  font-size:18px;
-  text-align: center;
-  text-shadow: none;
-}
-}
+ 
+    /* @media (max-height:1200px) and (max-width:860px){
+     
+       .btn-container{
+        margin-top:-.75rem;
+        transform: scale(1);
+        position:absolute;
+        bottom: -65%;
+        
+       }
+       #display-container{
+        top:15%;
+       }
+       #btn{
+        margin-top:0;
+        font-size:1rem;
+       }
+       #score{
+        display:none;
+       }
+      #canvas-container{
+        margin-top:0;
+      }
+      #keypad-container{
+        position: absolute;
+        bottom:-40%;
 
-  /*portrait phone*/
+        
+      }
+  
+      } */
+      
+       /*phone portrait*/
   @media (max-width:400px) and (max-height: 900px){
     #canvas-container{
       margin-top:0;
@@ -281,36 +283,6 @@ width:20px;
     }
 
     }
-    /* @media (max-height:1200px) and (max-width:860px){
-     
-       .btn-container{
-        margin-top:-.75rem;
-        transform: scale(1);
-        position:absolute;
-        bottom: -65%;
-        
-       }
-       #display-container{
-        top:15%;
-       }
-       #btn{
-        margin-top:0;
-        font-size:1rem;
-       }
-       #score{
-        display:none;
-       }
-      #canvas-container{
-        margin-top:0;
-      }
-      #keypad-container{
-        position: absolute;
-        bottom:-40%;
-
-        
-      }
-  
-      } */
       /*phone landscape*/
       @media (max-height:400px) and (max-width:900px){
         #canvas-container{
