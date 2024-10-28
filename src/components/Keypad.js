@@ -4,21 +4,21 @@ export default function Keypad({setKeypadHidden,keypadHidden,keypadRef}) {
     useEffect(()=>{
       window.onload=()=>{
         let keys = document.querySelectorAll('.k')
-        for(let x = 0; x < keys.length; x++){
+        keys.forEach((key,x)=>{
             if(x===0){
-                keys[x].style=`left: 5px;position:absolute;`
+                key.style=`left: 5px;position:absolute;`
             }
             if(x===1){
-                keys[x].style=`right: 0px;position:absolute;`
+                key.style=`right: 0px;position:absolute;`
             }
             if(x===2){
-                keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;top: -20px;position:absolute;`
+                key.style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;top: -20px;position:absolute;`
             }
             if(x===3){
-                keys[x].style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;bottom: -20px;position:absolute;`
+                key.style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;bottom: -20px;position:absolute;`
             }
-        }
-        if(window.innerWidth <= 1300){
+        })
+        if(document.body.clientWidth <= 950){
             setKeypadHidden('visible')
         }
       }
