@@ -18,11 +18,18 @@ export default function Keypad({setKeypadHidden,keypadHidden,keypadRef}) {
                 key.style=`left:${keypadRef.current.getBoundingClientRect().width/2.5}px;bottom: -20px;position:absolute;`
             }
         })
-        if(document.body.clientWidth <= 950){
-            setKeypadHidden('visible')
-        }
       }
-        
+
+      // set keypad
+      if(document.body.clientWidth <= 950){
+        setKeypadHidden('visible')
+    }
+    // resize
+      window.onresize=e=>{
+        if(document.body.clientWidth <= 950){
+          setKeypadHidden('visible')
+      }
+      }
     },[])
   return (
     <>
